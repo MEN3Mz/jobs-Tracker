@@ -137,3 +137,11 @@ const deleteAIEF = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ msg: "Opportunity removed" });
 };
+
+module.exports = {
+  getAllAIEF,
+  getAIEF,
+  createAIEF,
+  updateAIEF,
+  deleteAIEF,
+};

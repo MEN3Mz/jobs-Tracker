@@ -60,7 +60,7 @@ const updateUser = async (req, res) => {
   }
   const user = await User.findByIdAndUpdate(
     req.user.userId,
-    { email, name, lastName, location, role },
+    { email, name, lastName, location },
     { new: true, runValidators: true },
   );
   if (!user) throw new NotFoundError("user not found");

@@ -1,3 +1,7 @@
+const AIEF = require("../models/AIEF");
+const { StatusCodes } = require("http-status-codes");
+const { NotFoundError } = require("../errors");
+
 const getAllAIEF = async (req, res) => {
   const {
     major,

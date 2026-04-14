@@ -44,7 +44,7 @@ const AIEFschema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    type: {
+    workType: {
       type: String,
       enum: ["Full-Time", "Part-Time", "Remote", "Internship"],
       required: true,

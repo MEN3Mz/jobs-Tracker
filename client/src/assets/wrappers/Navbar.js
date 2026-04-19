@@ -7,15 +7,25 @@ const Wrapper = styled.nav`
   justify-content: center;
   box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.1);
   .logo {
-    display: flex;
-    align-items: center;
-    width: 100px;
+    display: block;
+    height: auto;
+    object-fit: contain;
+  }
+  .logo-nav {
+    width: 138px;
+    filter: drop-shadow(0 6px 12px rgba(29, 78, 216, 0.15));
   }
   .nav-center {
     display: flex;
     width: 90vw;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
+  }
+  .brand-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
   }
   .toggle-btn {
     background: transparent;
@@ -73,11 +83,11 @@ const Wrapper = styled.nav`
     .nav-center {
       width: 90%;
     }
-    .logo {
+    .brand-center {
       display: none;
     }
-    .logo-text {
-      display: block;
+    .logo-nav {
+      width: 156px;
     }
   }
 `

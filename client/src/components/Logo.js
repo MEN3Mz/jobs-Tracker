@@ -1,6 +1,6 @@
-import logo from '../assets/images/logo.svg';
+import logo from '../assets/images/jobzy-logo-transparent.png';
 
-const Logo = () => {
-  return <img src={logo} alt='jobster logo' className='logo' />;
+const Logo = ({ variant = 'default' }) => {
+  return <img src={logo} alt='jobzy logo' className={`logo logo-${variant}`} />;
 };
 export default Logo;

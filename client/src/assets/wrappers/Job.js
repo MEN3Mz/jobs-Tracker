@@ -41,15 +41,35 @@ const Wrapper = styled.article`
       letter-spacing: var(--letterSpacing);
     }
   }
-  .pending {
+  .source-tag {
+    display: inline-block;
+    margin-top: 0.4rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    background: var(--primary-100);
+    color: var(--primary-700);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .didnt-yet {
     background: #fcefc7;
     color: #e9b949;
+  }
+  .submitted,
+  .applied {
+    background: #dbeafe;
+    color: #1d4ed8;
   }
   .interview {
     background: #e0e8f9;
     color: #647acb;
   }
-  .declined {
+  .accepted {
+    color: #0f5132;
+    background: #d1e7dd;
+  }
+  .rejected {
     color: #d66a6a;
     background: #ffeeee;
   }
@@ -76,9 +96,39 @@ const Wrapper = styled.article`
     text-transform: capitalize;
     letter-spacing: var(--letterSpacing);
     text-align: center;
-    width: 100px;
-    height: 30px;
+    min-width: 120px;
+    padding: 0.35rem 0.75rem;
+    height: auto;
     margin-top: 0.5rem;
+  }
+  .details {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 1rem;
+  }
+  .details p {
+    margin: 0;
+    max-width: none;
+    color: var(--grey-700);
+    text-transform: none;
+    line-height: 1.6;
+  }
+  .details span {
+    color: var(--grey-900);
+    font-weight: 700;
+  }
+  .details a {
+    color: var(--primary-600);
+    text-transform: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    word-break: break-word;
+  }
+  .description,
+  .notes,
+  .instructions {
+    color: var(--grey-700);
   }
   footer {
     margin-top: 1rem;

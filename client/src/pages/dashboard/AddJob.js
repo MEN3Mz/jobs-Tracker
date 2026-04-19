@@ -1,4 +1,4 @@
-import { FormRow, FormRowSelect } from '../../components';
+import { FormRow, FormRowSelect, FormRowTextArea } from '../../components';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -9,12 +9,14 @@ import {
   editJob,
 } from '../../features/job/jobSlice';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 const AddJob = () => {
   const {
     isLoading,
     position,
     company,
     jobLocation,
+    notes,
     jobType,
     jobTypeOptions,
     status,
@@ -24,6 +26,8 @@ const AddJob = () => {
   } = useSelector((store) => store.job);
   const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -35,12 +39,16 @@ const AddJob = () => {
       dispatch(
         editJob({
           jobId: editJobId,
-          job: { position, company, jobLocation, jobType, status },
+          job: { position, company, jobLocation, jobType, status, notes },
         })
-      );
+      )
+        .unwrap()
+        .then(() => navigate('/all-jobs'));
       return;
     }
-    dispatch(createJob({ position, company, jobLocation, jobType, status }));
+    dispatch(
+      createJob({ position, company, jobLocation, jobType, status, notes })
+    );
   };
 
   const handleJobInput = (e) => {
@@ -86,6 +94,13 @@ const AddJob = () => {
             labelText='job location'
             value={jobLocation}
             handleChange={handleJobInput}
+          />
+          <FormRowTextArea
+            name='notes'
+            labelText='notes'
+            value={notes}
+            handleChange={handleJobInput}
+            placeholder='Add interviewer names, rejection reasons, feedback, next steps, or anything useful to remember'
           />
           {/* status */}
           <FormRowSelect

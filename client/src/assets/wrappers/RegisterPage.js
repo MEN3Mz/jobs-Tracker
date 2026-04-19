@@ -7,6 +7,9 @@ const Wrapper = styled.section`
     display: block;
     margin: 0 auto;
     margin-bottom: 1.38rem;
+    width: 220px;
+    height: auto;
+    object-fit: contain;
   }
   .form {
     max-width: 400px;

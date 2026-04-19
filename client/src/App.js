@@ -4,6 +4,7 @@ import { Landing, Error, Register, ProtectedRoute } from './pages';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
+  Aief,
   Profile,
   AddJob,
   AllJobs,
@@ -24,6 +25,7 @@ function App() {
         >
           <Route index element={<Stats />} />
           <Route path='all-jobs' element={<AllJobs />} />
+          <Route path='aief-opportunities' element={<Aief />} />
           <Route path='add-job' element={<AddJob />} />
           <Route path='profile' element={<Profile />} />
         </Route>

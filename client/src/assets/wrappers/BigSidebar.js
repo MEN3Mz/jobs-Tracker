@@ -26,6 +26,11 @@ const Wrapper = styled.aside`
       align-items: center;
       padding-left: 2.5rem;
     }
+    .logo-sidebar {
+      width: 150px;
+      height: auto;
+      object-fit: contain;
+    }
     .nav-links {
       padding-top: 2rem;
       display: flex;

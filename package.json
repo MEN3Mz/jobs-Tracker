@@ -5,7 +5,10 @@
     "main": "app.js",
     "scripts": {
         "start": "node app.js",
-        "dev": "nodemon app.js"
+        "dev": "nodemon app.js",
+        "populate:aief": "node populateAIEF.js",
+        "backfill:aief-jobs": "node backfillAiefJobs.js",
+        "backfill:aief-industries": "node backfillAiefIndustryGroups.js"
     },
     "author": "",
     "license": "ISC",

@@ -24,6 +24,9 @@ const Wrapper = styled.section`
     display: grid;
     row-gap: 0.5rem;
   }
+  .form-row-textarea {
+    grid-column: 1 / -1;
+  }
   .form-center button {
     align-self: end;
     height: 35px;

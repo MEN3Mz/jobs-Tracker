@@ -30,6 +30,12 @@ const Wrapper = styled.aside`
     align-items: center;
     flex-direction: column;
   }
+  .logo-sidebar {
+    width: 165px;
+    height: auto;
+    object-fit: contain;
+    margin-top: 0.5rem;
+  }
   .close-btn {
     position: absolute;
     top: 10px;

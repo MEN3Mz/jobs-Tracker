@@ -1,5 +1,11 @@
 import StatItem from './StatItem';
-import { FaSuitcaseRolling, FaCalendarCheck, FaBug } from 'react-icons/fa';
+import {
+  FaCalendarCheck,
+  FaClipboardCheck,
+  FaHourglassHalf,
+  FaSuitcaseRolling,
+  FaTimesCircle,
+} from 'react-icons/fa';
 import Wrapper from '../assets/wrappers/StatsContainer';
 import { useSelector } from 'react-redux';
 
@@ -8,11 +14,18 @@ const StatsContainer = () => {
 
   const defaultStats = [
     {
-      title: 'pending applications',
-      count: stats.pending || 0,
-      icon: <FaSuitcaseRolling />,
+      title: "didn't apply yet",
+      count: stats.didntYet || 0,
+      icon: <FaHourglassHalf />,
       color: '#e9b949',
       bcg: '#fcefc7',
+    },
+    {
+      title: 'submitted',
+      count: stats.submitted || 0,
+      icon: <FaSuitcaseRolling />,
+      color: '#3b82f6',
+      bcg: '#dbeafe',
     },
     {
       title: 'interviews scheduled',
@@ -22,9 +35,16 @@ const StatsContainer = () => {
       bcg: '#e0e8f9',
     },
     {
-      title: 'jobs declined',
-      count: stats.declined || 0,
-      icon: <FaBug />,
+      title: 'accepted',
+      count: stats.accepted || 0,
+      icon: <FaClipboardCheck />,
+      color: '#0f5132',
+      bcg: '#d1e7dd',
+    },
+    {
+      title: 'rejected',
+      count: stats.rejected || 0,
+      icon: <FaTimesCircle />,
       color: '#d66a6a',
       bcg: '#ffeeee',
     },

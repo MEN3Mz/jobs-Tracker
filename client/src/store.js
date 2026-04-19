@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import aiefSlice from './features/aief/aiefSlice';
 import jobSlice from './features/job/jobSlice';
 import userSlice from './features/user/userSlice';
 import allJobsSlice from './features/allJobs/allJobsSlice';
@@ -7,5 +8,6 @@ export const store = configureStore({
     user: userSlice,
     job: jobSlice,
     allJobs: allJobsSlice,
+    aief: aiefSlice,
   },
 });

@@ -2,6 +2,29 @@ const AIEF = require("../models/AIEF");
 const { StatusCodes } = require("http-status-codes");
 const { NotFoundError } = require("../errors");
 
+const getAiefFilterOptions = async () => {
+  const [industryOptions, majorOptions, targetGroupOptions] = await Promise.all([
+    AIEF.distinct("industryGroup", { industryGroup: { $ne: "" } }),
+    AIEF.distinct("requiredMajor"),
+    AIEF.distinct("targetGroup"),
+  ]);
+
+  return {
+    industryOptions: [
+      "All",
+      ...industryOptions.filter((value) => value && value !== "All").sort(),
+    ],
+    majorOptions: [
+      "All",
+      ...majorOptions.filter((value) => value && value !== "All").sort(),
+    ],
+    targetGroupOptions: [
+      "All",
+      ...targetGroupOptions.filter((value) => value && value !== "All").sort(),
+    ],
+  };
+};
+
 const getAllAIEF = async (req, res) => {
   const {
     major,
@@ -39,7 +62,7 @@ const getAllAIEF = async (req, res) => {
   }
 
   if (industry && industry !== "All") {
-    queryObject.industry = industry;
+    queryObject.industryGroup = industry;
   }
 
   if (major && major !== "All") {
@@ -94,6 +117,11 @@ const getAllAIEF = async (req, res) => {
   });
 };
 
+const getAiefFilters = async (req, res) => {
+  const filters = await getAiefFilterOptions();
+  res.status(StatusCodes.OK).json({ filters });
+};
+
 const getAIEF = async (req, res) => {
   const { id: aiefId } = req.params;
 
@@ -140,6 +168,7 @@ const deleteAIEF = async (req, res) => {
 
 module.exports = {
   getAllAIEF,
+  getAiefFilters,
   getAIEF,
   createAIEF,
   updateAIEF,

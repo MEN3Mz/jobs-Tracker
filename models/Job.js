@@ -13,8 +13,8 @@ const JobSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['interview', 'declined', 'pending'],
-        default: 'pending',
+        enum: ["didn't yet", 'submitted', 'accepted', 'rejected', 'interview'],
+        default: "didn't yet",
     },
     createdBy: {
         type: mongoose.Types.ObjectId,
@@ -30,7 +30,63 @@ const JobSchema = new mongoose.Schema({
         type: String,
         default: 'my city',
         required: true
-    }
+    },
+    industry: {
+        type: String,
+        default: '',
+        trim: true,
+    },
+    compensation: {
+        type: String,
+        default: '',
+        trim: true,
+    },
+    deadline: {
+        type: Date,
+    },
+    website: {
+        type: String,
+        default: '',
+        trim: true,
+    },
+    contactEmail: {
+        type: String,
+        default: '',
+        trim: true,
+    },
+    applicationInstructions: {
+        type: String,
+        default: '',
+        trim: true,
+    },
+    description: {
+        type: String,
+        default: '',
+        trim: true,
+    },
+    notes: {
+        type: String,
+        default: '',
+        trim: true,
+    },
+    requiredMajor: {
+        type: [String],
+        default: [],
+    },
+    targetGroup: {
+        type: [String],
+        default: [],
+    },
+    sourceType: {
+        type: String,
+        default: '',
+        trim: true,
+    },
+    sourceOpportunityId: {
+        type: String,
+        default: '',
+        trim: true,
+    },
 }, { timestamps: true })
 
 module.exports = mongoose.model('Job', JobSchema)

@@ -26,6 +26,7 @@ export const editJobThunk = async ({ jobId, job }, thunkAPI) => {
   try {
     const resp = await customFetch.patch(`/jobs/${jobId}`, job);
     thunkAPI.dispatch(clearValues());
+    thunkAPI.dispatch(getAllJobs());
     return resp.data;
   } catch (error) {
     return checkForUnauthorizedResponse(error, thunkAPI);

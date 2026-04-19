@@ -20,9 +20,8 @@ const Navbar = () => {
         <button type='button' className='toggle-btn' onClick={toggle}>
           <FaAlignLeft />
         </button>
-        <div>
-          <Logo />
-          <h3 className='logo-text'>dashboard</h3>
+        <div className='brand-center'>
+          <Logo variant='nav' />
         </div>
         <div className='btn-container'>
           <button

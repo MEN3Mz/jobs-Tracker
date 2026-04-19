@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   getAllAIEF,
+  getAiefFilters,
   getAIEF,
   updateAIEF,
   deleteAIEF,
@@ -17,6 +18,8 @@ router
   .route("/")
   .get(getAllAIEF)
   .post(authenticateUser, authorizePermissions("admin"), testUser, createAIEF);
+
+router.route("/filters").get(getAiefFilters);
 
 router
   .route("/:id")

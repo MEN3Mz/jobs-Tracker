@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Job from './Job';
 import Wrapper from '../assets/wrappers/JobsContainer';
 import { useSelector, useDispatch } from 'react-redux';
 import Loading from './Loading';
 import { getAllJobs } from '../features/allJobs/allJobsSlice';
 import PageBtnContainer from './PageBtnContainer';
+
+const SEARCH_DELAY_MS = 1200;
+
 const JobsContainer = () => {
   const {
     jobs,
@@ -18,10 +21,21 @@ const JobsContainer = () => {
     sort,
   } = useSelector((store) => store.allJobs);
   const dispatch = useDispatch();
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
-    dispatch(getAllJobs());
-  }, [page, search, searchStatus, searchType, sort]);
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+      dispatch(getAllJobs());
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      dispatch(getAllJobs());
+    }, SEARCH_DELAY_MS);
+
+    return () => clearTimeout(timeoutId);
+  }, [dispatch, page, search, searchStatus, searchType, sort]);
 
   if (isLoading) {
     return <Loading />;

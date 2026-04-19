@@ -5,6 +5,62 @@ const { BadRequestError, NotFoundError } = require('../errors')
 const mongoose = require('mongoose')
 const moment = require('moment')
 
+const pickJobFields = (body = {}, options = {}) => {
+    const { partial = false } = options
+    const fields = [
+        'company',
+        'position',
+        'status',
+        'jobType',
+        'jobLocation',
+        'industry',
+        'compensation',
+        'deadline',
+        'website',
+        'contactEmail',
+        'applicationInstructions',
+        'description',
+        'notes',
+        'requiredMajor',
+        'targetGroup',
+        'sourceType',
+        'sourceOpportunityId',
+    ]
+
+    const jobData = {}
+
+    fields.forEach((field) => {
+        if (partial && !Object.prototype.hasOwnProperty.call(body, field)) {
+            return
+        }
+
+        if (field === 'requiredMajor' || field === 'targetGroup') {
+            if (Object.prototype.hasOwnProperty.call(body, field)) {
+                jobData[field] = Array.isArray(body[field]) ? body[field] : []
+            } else if (!partial) {
+                jobData[field] = []
+            }
+            return
+        }
+
+        if (field === 'deadline') {
+            if (Object.prototype.hasOwnProperty.call(body, field)) {
+                jobData.deadline = body.deadline || undefined
+            } else if (!partial) {
+                jobData.deadline = undefined
+            }
+            return
+        }
+
+        if (Object.prototype.hasOwnProperty.call(body, field)) {
+            jobData[field] = body[field]
+        } else if (!partial) {
+            jobData[field] = ''
+        }
+    })
+
+    return jobData
+}
 
 
 const getAllJobs = async(req, res) => {
@@ -13,10 +69,16 @@ const getAllJobs = async(req, res) => {
         createdBy: req.user.userId,
     }
     if (search) {
-        queryObject.position = { $regex: search, $options: 'i' }
+        queryObject.$or = [
+            { position: { $regex: search, $options: 'i' } },
+            { company: { $regex: search, $options: 'i' } },
+            { industry: { $regex: search, $options: 'i' } },
+        ]
     }
     if (status && status !== 'all') {
-        queryObject.status = status
+        queryObject.status = status === 'submitted'
+            ? { $in: ['submitted', 'applied'] }
+            : status
     }
     if (jobType && jobType !== 'all') {
         queryObject.jobType = jobType
@@ -58,23 +120,31 @@ const getJob = async(req, res) => {
 
 
 const createJob = async(req, res) => {
-    req.body.createdBy = req.user.userId
-    const job = await Job.create(req.body)
-    res.status(StatusCodes.CREATED).json({ job })
+    const jobData = pickJobFields(req.body)
+
+    if (!jobData.company || !jobData.position || !jobData.jobLocation) {
+        throw new BadRequestError('Company, Position and Job Location fields cannot be empty')
+    }
+
+    jobData.createdBy = req.user.userId
+    const job = await Job.create(jobData)
+    res.status(StatusCodes.CREATED).json({ job, msg: 'Job Created' })
 }
 
 const updateJob = async(req, res) => {
     const {
-        body: { company, position },
         user: { userId },
         params: { id: jobId },
     } = req
 
-    if (company === '' || position === '') {
-        throw new BadRequestError('Company or Position fields cannot be empty')
+    const jobData = pickJobFields(req.body, { partial: true })
+
+    if (!jobData.company || !jobData.position || !jobData.jobLocation) {
+        throw new BadRequestError('Company, Position and Job Location fields cannot be empty')
     }
+
     const job = await Job.findByIdAndUpdate({ _id: jobId, createdBy: userId },
-        req.body, { new: true, runValidators: true }
+        { $set: jobData }, { new: true, runValidators: true }
     )
     if (!job) {
         throw new NotFoundError(`No job with id ${jobId}`)
@@ -113,9 +183,11 @@ const showStats = async(req, res) => {
 
     // 3. Set defaults so the frontend always gets the expected keys
     const defaultStats = {
-        pending: stats.pending || 0,
+        didntYet: stats["didn't yet"] || stats.pending || 0,
+        submitted: stats.submitted || stats.applied || 0,
         interview: stats.interview || 0,
-        declined: stats.declined || 0,
+        accepted: stats.accepted || 0,
+        rejected: stats.rejected || stats.declined || 0,
     };
 
     let monthlyApplications = await Job.aggregate([

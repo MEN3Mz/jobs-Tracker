@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const getAiefIndustryGroup = require("../utils/aiefIndustryGroup");
 
 const AIEFschema = new mongoose.Schema(
   {
@@ -11,6 +12,11 @@ const AIEFschema = new mongoose.Schema(
       type: String,
       trim: true,
       default: "",
+    },
+    industryGroup: {
+      type: String,
+      trim: true,
+      default: "Other",
     },
     website: {
       type: String,
@@ -90,5 +96,30 @@ const AIEFschema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+AIEFschema.pre("save", function (next) {
+  this.industryGroup = getAiefIndustryGroup(this.industry);
+  next();
+});
+
+AIEFschema.pre("findOneAndUpdate", function (next) {
+  const update = this.getUpdate() || {};
+  const nextIndustry =
+    update.industry ?? update.$set?.industry ?? update.$setOnInsert?.industry;
+
+  if (nextIndustry !== undefined) {
+    const industryGroup = getAiefIndustryGroup(nextIndustry);
+
+    if (update.$set) {
+      update.$set.industryGroup = industryGroup;
+    } else {
+      update.industryGroup = industryGroup;
+    }
+
+    this.setUpdate(update);
+  }
+
+  next();
+});
 
 module.exports = mongoose.model("AIEF", AIEFschema);

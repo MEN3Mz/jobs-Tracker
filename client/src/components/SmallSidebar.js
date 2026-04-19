@@ -23,7 +23,7 @@ const SmallSidebar = () => {
             <FaTimes />
           </button>
           <header>
-            <Logo />
+            <Logo variant='sidebar' />
           </header>
           <NavLinks toggleSidebar={toggle} />
         </div>

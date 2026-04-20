@@ -15,6 +15,7 @@ const initialState = {
 
 function Register() {
     const [values, setValues] = useState(initialState);
+    const [authAction, setAuthAction] = useState(null);
     const { user, isLoading } = useSelector((store) => store.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -33,22 +34,34 @@ function Register() {
             return;
         }
         if (isMember) {
+            setAuthAction('login');
             dispatch(loginUser({ email: email, password: password }));
             return;
         }
+        setAuthAction('register');
         dispatch(registerUser({ name, email, password }));
     };
 
     const toggleMember = () => {
         setValues({...values, isMember: !values.isMember });
     };
+    const loginDemoUser = () => {
+        setAuthAction('login');
+        dispatch(loginUser({ email: 'zaza@gmail.com', password: 'BOBOBOBO34' }));
+    };
     useEffect(() => {
-        if (user) {
+        if (user && authAction) {
+            navigate('/');
             setTimeout(() => {
-                navigate('/');
-            }, 2000);
+                toast.success(
+                    authAction === 'login'
+                        ? `Welcome Back ${user.name}`
+                        : `Hello There ${user.name}`
+                );
+                setAuthAction(null);
+            }, 300);
         }
-    }, [user]);
+    }, [authAction, navigate, user]);
     return ( <
         Wrapper className = 'full-page' >
         <
@@ -83,12 +96,7 @@ function Register() {
         button type = 'button'
         className = 'btn btn-block btn-hipster'
         disabled = { isLoading }
-        onClick = {
-            () =>
-            dispatch(
-                loginUser({ email: 'zaza@gmail.com', password: 'BOBOBOBO34' })
-            )
-        } >
+        onClick = { loginDemoUser } >
         { isLoading ? 'loading...' : 'demo app' } <
         /button> <
         p > { values.isMember ? 'Not a member yet?' : 'Already a member?' } <

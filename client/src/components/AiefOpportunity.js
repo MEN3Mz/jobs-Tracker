@@ -148,7 +148,7 @@ const AiefOpportunity = ({
               onClick={saveToJobs}
               disabled={isSaving}
             >
-              {isSaving ? 'saving...' : 'move to all jobs'}
+              {isSaving ? 'saving...' : 'move to my jobs'}
             </button>
             <button
               type='button'

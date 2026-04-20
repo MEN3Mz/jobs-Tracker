@@ -240,6 +240,9 @@ ul {
 .btn-block {
   height: 35px;
 }
+.form-input-readonly {
+  cursor: not-allowed;
+}
 .form-row {
   margin-bottom: 1rem;
 }

@@ -23,13 +23,6 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide password"],
     minlength: 6,
   },
-  lastName: {
-    type: String,
-    trim: true,
-    default: "LastName",
-    maxlength: 20,
-    minlength: 3,
-  },
   location: {
     type: String,
     trim: true,

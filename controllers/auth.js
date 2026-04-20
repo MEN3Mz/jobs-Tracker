@@ -13,7 +13,6 @@ const register = async (req, res) => {
   res.status(StatusCodes.CREATED).json({
     user: {
       name: user.name,
-      lastName: user.lastName,
       location: user.location,
       email: user.email,
       role: user.role,
@@ -42,7 +41,6 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({
     user: {
       name: user.name,
-      lastName: user.lastName,
       location: user.location,
       email: user.email,
       role: user.role,
@@ -53,14 +51,15 @@ const login = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { email, name, lastName, location } = req.body;
-  console.log(req.user);
-  if (!email || !name || !lastName || !location) {
+  const { name, location } = req.body;
+  if (!name || !location) {
     throw new BadRequestError("please provide all values");
   }
+  const currentUser = await User.findById(req.user.userId);
+  if (!currentUser) throw new NotFoundError("user not found");
   const user = await User.findByIdAndUpdate(
     req.user.userId,
-    { email, name, lastName, location },
+    { name, location },
     { new: true, runValidators: true },
   );
   if (!user) throw new NotFoundError("user not found");
@@ -69,7 +68,6 @@ const updateUser = async (req, res) => {
   res.status(StatusCodes.OK).json({
     user: {
       name: user.name,
-      lastName: user.lastName,
       location: user.location,
       email: user.email,
       role: user.role,

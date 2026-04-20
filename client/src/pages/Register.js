@@ -33,22 +33,41 @@ function Register() {
             return;
         }
         if (isMember) {
-            dispatch(loginUser({ email: email, password: password }));
+            dispatch(loginUser({ email: email, password: password }))
+                .unwrap()
+                .then((payload) => {
+                    navigate('/');
+                    setTimeout(() => {
+                        toast.success(`Welcome Back ${payload.user.name}`);
+                    }, 300);
+                });
             return;
         }
-        dispatch(registerUser({ name, email, password }));
+        dispatch(registerUser({ name, email, password }))
+            .unwrap()
+            .then(() => {
+                navigate(`/unverified-account?email=${encodeURIComponent(email)}`);
+            });
     };
 
     const toggleMember = () => {
         setValues({...values, isMember: !values.isMember });
     };
+    const loginDemoUser = () => {
+        dispatch(loginUser({ email: 'zaza@gmail.com', password: 'BOBOBOBO34' }))
+            .unwrap()
+            .then((payload) => {
+                navigate('/');
+                setTimeout(() => {
+                    toast.success(`Welcome Back ${payload.user.name}`);
+                }, 300);
+            });
+    };
     useEffect(() => {
         if (user) {
-            setTimeout(() => {
-                navigate('/');
-            }, 2000);
+            navigate('/');
         }
-    }, [user]);
+    }, [navigate, user]);
     return ( <
         Wrapper className = 'full-page' >
         <
@@ -70,7 +89,11 @@ function Register() {
         name = 'email'
         value = { values.email }
         handleChange = { handleChange }
-        /> { /* password field */ } <
+        /> {
+            !values.isMember && ( <
+                p className = 'register-hint' > Use your university email ending with guc.edu.eg or giu-uni.de, including addresses like @student.guc.edu.eg. < /p>
+            )
+        } { /* password field */ } <
         FormRow type = 'password'
         name = 'password'
         value = { values.password }
@@ -83,12 +106,7 @@ function Register() {
         button type = 'button'
         className = 'btn btn-block btn-hipster'
         disabled = { isLoading }
-        onClick = {
-            () =>
-            dispatch(
-                loginUser({ email: 'zaza@gmail.com', password: 'BOBOBOBO34' })
-            )
-        } >
+        onClick = { loginDemoUser } >
         { isLoading ? 'loading...' : 'demo app' } <
         /button> <
         p > { values.isMember ? 'Not a member yet?' : 'Already a member?' } <

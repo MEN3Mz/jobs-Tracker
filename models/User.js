@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { date } = require("joi");
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -8,6 +9,16 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide name"],
     maxlength: 50,
     minlength: 3,
+  },
+  verificationToken: {
+    type: String,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  verified: {
+    type: Date,
   },
   email: {
     type: String,
@@ -22,13 +33,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide password"],
     minlength: 6,
-  },
-  lastName: {
-    type: String,
-    trim: true,
-    default: "LastName",
-    maxlength: 20,
-    minlength: 3,
   },
   location: {
     type: String,

@@ -2,5 +2,14 @@ import Error from './Error';
 import Landing from './Landing';
 import ProtectedRoute from './ProtectedRoute';
 import Register from './Register';
+import UnverifiedAccount from './UnverifiedAccount';
+import VerifyEmail from './VerifyEmail';
 
-export { Landing, Error, Register, ProtectedRoute };
+export {
+  Landing,
+  Error,
+  Register,
+  ProtectedRoute,
+  UnverifiedAccount,
+  VerifyEmail,
+};

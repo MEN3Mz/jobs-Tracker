@@ -1,4 +1,13 @@
-const FormRow = ({ type, name, value, handleChange, labelText }) => {
+const FormRow = ({
+  type,
+  name,
+  value,
+  handleChange,
+  labelText,
+  readOnly = false,
+  disabled = false,
+  title = '',
+}) => {
   return (
     <div className='form-row'>
       <label htmlFor={name} className='form-label'>
@@ -10,7 +19,10 @@ const FormRow = ({ type, name, value, handleChange, labelText }) => {
         name={name}
         value={value}
         onChange={handleChange}
-        className='form-input'
+        className={`form-input ${readOnly ? 'form-input-readonly' : ''}`.trim()}
+        readOnly={readOnly}
+        disabled={disabled}
+        title={title}
       />
     </div>
   );

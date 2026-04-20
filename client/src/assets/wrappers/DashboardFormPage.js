@@ -32,6 +32,11 @@ const Wrapper = styled.section`
     height: 35px;
     margin-top: 1rem;
   }
+  .profile-save-btn {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(100%, 16rem);
+  }
   .btn-container {
     display: grid;
     grid-template-columns: 1fr 1fr;

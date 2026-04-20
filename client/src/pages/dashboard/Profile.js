@@ -11,14 +11,13 @@ const Profile = () => {
   const [userData, setUserData] = useState({
     name: user?.name || '',
     email: user?.email || '',
-    lastName: user?.lastName || '',
     location: user?.location || '',
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { name, email, lastName, location } = userData;
-    if (!name || !email || !lastName || !location) {
+    const { name, location } = userData;
+    if (!name || !location) {
       toast.error('please fill out all fields');
       return;
     }
@@ -38,21 +37,9 @@ const Profile = () => {
         <div className='form-center'>
           <FormRow
             type='text'
+            labelText='username'
             name='name'
             value={userData.name}
-            handleChange={handleChange}
-          />
-          <FormRow
-            type='text'
-            labelText='last name'
-            name='lastName'
-            value={userData.lastName}
-            handleChange={handleChange}
-          />
-          <FormRow
-            type='email'
-            name='email'
-            value={userData.email}
             handleChange={handleChange}
           />
           <FormRow
@@ -61,7 +48,20 @@ const Profile = () => {
             value={userData.location}
             handleChange={handleChange}
           />
-          <button type='submit' className='btn btn-block' disabled={isLoading}>
+          <FormRow
+            type='email'
+            name='email'
+            value={userData.email}
+            handleChange={handleChange}
+            readOnly={true}
+            title='University email cannot be changed'
+            labelText='university email'
+          />
+          <button
+            type='submit'
+            className='btn btn-block profile-save-btn'
+            disabled={isLoading}
+          >
             {isLoading ? 'Please Wait...' : 'save changes'}
           </button>
         </div>

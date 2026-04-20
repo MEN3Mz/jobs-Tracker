@@ -6,7 +6,7 @@ import { BsGlobe2 } from 'react-icons/bs';
 
 const links = [
   { id: 1, text: 'stats', path: '/', icon: <IoBarChartSharp /> },
-  { id: 2, text: 'all jobs', path: 'all-jobs', icon: <MdQueryStats /> },
+  { id: 2, text: 'my jobs', path: 'all-jobs', icon: <MdQueryStats /> },
   {
     id: 3,
     text: 'AIEF opportunities',

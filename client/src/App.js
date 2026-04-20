@@ -1,6 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { Landing, Error, Register, ProtectedRoute } from './pages';
+import {
+  Landing,
+  Error,
+  Register,
+  ProtectedRoute,
+  UnverifiedAccount,
+  VerifyEmail,
+} from './pages';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -31,6 +38,8 @@ function App() {
         </Route>
         <Route path='landing' element={<Landing />} />
         <Route path='register' element={<Register />} />
+        <Route path='unverified-account' element={<UnverifiedAccount />} />
+        <Route path='verify-email' element={<VerifyEmail />} />
         <Route path='*' element={<Error />} />
       </Routes>
       <ToastContainer position='top-center' />

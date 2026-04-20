@@ -60,10 +60,10 @@ const userSlice = createSlice({
       state.isLoading = true;
     },
     [registerUser.fulfilled]: (state, { payload }) => {
-      const { user } = payload;
       state.isLoading = false;
-      state.user = user;
-      addUserToLocalStorage(user);
+      if (payload?.msg) {
+        toast.success(payload.msg);
+      }
     },
     [registerUser.rejected]: (state, { payload }) => {
       state.isLoading = false;

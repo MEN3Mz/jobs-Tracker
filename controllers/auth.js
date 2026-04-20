@@ -6,20 +6,71 @@ const {
   NotFoundError,
 } = require("../errors");
 
+const crypto = require("crypto");
+
+const sendVerificationEmail = require("../utils/sendVerificationEmail");
+const allowedUniversityDomainSuffixes = ["guc.edu.eg", "giu-uni.de"];
+
 const register = async (req, res) => {
   const { name, email, password } = req.body;
-  const user = await User.create({ name, email, password });
-  const token = user.createJWT();
-  res.status(StatusCodes.CREATED).json({
-    user: {
-      name: user.name,
-      location: user.location,
-      email: user.email,
-      role: user.role,
+  const normalizedEmail = email?.trim().toLowerCase();
 
-      token,
-    },
+  if (!normalizedEmail) {
+    throw new BadRequestError("Please provide email");
+  }
+
+  const emailDomain = normalizedEmail.split("@")[1];
+  const isAllowedUniversityEmail = allowedUniversityDomainSuffixes.some(
+    (domainSuffix) =>
+      emailDomain === domainSuffix || emailDomain.endsWith(`.${domainSuffix}`)
+  );
+
+  if (!isAllowedUniversityEmail) {
+    throw new BadRequestError(
+      "Registration is limited to university emails ending with guc.edu.eg or giu-uni.de"
+    );
+  }
+
+  const origin = process.env.CLIENT_URL || req.get("origin");
+  const verificationToken = crypto.randomBytes(40).toString("hex");
+  const user = await User.create({
+    name,
+    email: normalizedEmail,
+    password,
+    verificationToken,
   });
+  await sendVerificationEmail({
+    name: user.name,
+    email: user.email,
+    verificationToken: user.verificationToken,
+    origin,
+  });
+  res.status(StatusCodes.CREATED).json({
+    msg: "Success! Please check your email to verify Account",
+  });
+};
+
+const verifyEmail = async (req, res) => {
+  const { email, verificationToken } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new UnauthenticatedError("Verification Failed");
+  }
+
+  if (user.isVerified) {
+    return res.status(StatusCodes.OK).json({ msg: "Email already verified" });
+  }
+
+  if (user.verificationToken !== verificationToken) {
+    throw new UnauthenticatedError("Verification Failed");
+  }
+
+  user.isVerified = true;
+  user.verified = Date.now();
+  user.verificationToken = "";
+  await user.save();
+
+  res.status(StatusCodes.OK).json({ msg: "Email Verified" });
 };
 
 const login = async (req, res) => {
@@ -37,6 +88,9 @@ const login = async (req, res) => {
     throw new UnauthenticatedError("Invalid Credentials");
   }
   // compare password
+  if (!user.isVerified) {
+    throw new UnauthenticatedError("Please verify your account");
+  }
   const token = user.createJWT();
   res.status(StatusCodes.OK).json({
     user: {
@@ -80,4 +134,5 @@ module.exports = {
   register,
   login,
   updateUser,
+  verifyEmail,
 };

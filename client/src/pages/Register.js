@@ -15,7 +15,6 @@ const initialState = {
 
 function Register() {
     const [values, setValues] = useState(initialState);
-    const [authAction, setAuthAction] = useState(null);
     const { user, isLoading } = useSelector((store) => store.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -34,34 +33,41 @@ function Register() {
             return;
         }
         if (isMember) {
-            setAuthAction('login');
-            dispatch(loginUser({ email: email, password: password }));
+            dispatch(loginUser({ email: email, password: password }))
+                .unwrap()
+                .then((payload) => {
+                    navigate('/');
+                    setTimeout(() => {
+                        toast.success(`Welcome Back ${payload.user.name}`);
+                    }, 300);
+                });
             return;
         }
-        setAuthAction('register');
-        dispatch(registerUser({ name, email, password }));
+        dispatch(registerUser({ name, email, password }))
+            .unwrap()
+            .then(() => {
+                navigate(`/unverified-account?email=${encodeURIComponent(email)}`);
+            });
     };
 
     const toggleMember = () => {
         setValues({...values, isMember: !values.isMember });
     };
     const loginDemoUser = () => {
-        setAuthAction('login');
-        dispatch(loginUser({ email: 'zaza@gmail.com', password: 'BOBOBOBO34' }));
+        dispatch(loginUser({ email: 'zaza@gmail.com', password: 'BOBOBOBO34' }))
+            .unwrap()
+            .then((payload) => {
+                navigate('/');
+                setTimeout(() => {
+                    toast.success(`Welcome Back ${payload.user.name}`);
+                }, 300);
+            });
     };
     useEffect(() => {
-        if (user && authAction) {
+        if (user) {
             navigate('/');
-            setTimeout(() => {
-                toast.success(
-                    authAction === 'login'
-                        ? `Welcome Back ${user.name}`
-                        : `Hello There ${user.name}`
-                );
-                setAuthAction(null);
-            }, 300);
         }
-    }, [authAction, navigate, user]);
+    }, [navigate, user]);
     return ( <
         Wrapper className = 'full-page' >
         <
@@ -83,7 +89,11 @@ function Register() {
         name = 'email'
         value = { values.email }
         handleChange = { handleChange }
-        /> { /* password field */ } <
+        /> {
+            !values.isMember && ( <
+                p className = 'register-hint' > Use your university email ending with guc.edu.eg or giu-uni.de, including addresses like @student.guc.edu.eg. < /p>
+            )
+        } { /* password field */ } <
         FormRow type = 'password'
         name = 'password'
         value = { values.password }

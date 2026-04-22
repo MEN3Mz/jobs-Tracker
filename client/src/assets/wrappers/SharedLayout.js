@@ -10,6 +10,9 @@ const Wrapper = styled.section`
     margin: 0 auto;
     padding: 2rem 0;
   }
+  .app-credit-footer {
+    padding-bottom: 1.75rem;
+  }
   @media (min-width: 992px) {
     .dashboard {
       grid-template-columns: auto 1fr;

@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import { Logo } from '../components';
+import { CreditFooter, Logo } from '../components';
 import Wrapper from '../assets/wrappers/RegisterPage';
 
 const UnverifiedAccount = () => {
@@ -26,6 +26,7 @@ const UnverifiedAccount = () => {
           back to login
         </Link>
       </div>
+      <CreditFooter />
     </Wrapper>
   );
 };

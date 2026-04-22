@@ -2,6 +2,7 @@ import AiefContainer from './AiefContainer';
 import AiefSearchContainer from './AiefSearchContainer';
 import BigSidebar from './BigSidebar';
 import ChartsContainer from './ChartsContainer';
+import CreditFooter from './CreditFooter';
 import FormRow from './FormRow';
 import FormRowSelect from './FormRowSelect';
 import FormRowTextArea from './FormRowTextArea';
@@ -15,6 +16,7 @@ import StatsContainer from './StatsContainer';
 export {
   AiefContainer,
   AiefSearchContainer,
+  CreditFooter,
   Logo,
   FormRow,
   Navbar,

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const Wrapper = styled.article`
-  padding: 2rem;
+  padding: 1.25rem;
   background: var(--white);
   border-radius: var(--borderRadius);
   border-bottom: 5px solid ${(props) => props.color};
@@ -13,7 +13,7 @@ const Wrapper = styled.article`
   .count {
     display: block;
     font-weight: 700;
-    font-size: 50px;
+    font-size: 2.2rem;
     color: ${(props) => props.color};
   }
   .title {
@@ -24,16 +24,29 @@ const Wrapper = styled.article`
     margin-top: 0.5rem;
   }
   .icon {
-    width: 70px;
-    height: 60px;
+    width: 54px;
+    height: 48px;
     background: ${(props) => props.bcg};
     border-radius: var(--borderRadius);
     display: flex;
     align-items: center;
     justify-content: center;
     svg {
-      font-size: 2rem;
+      font-size: 1.5rem;
       color: ${(props) => props.color};
+    }
+  }
+  @media (min-width: 576px) {
+    padding: 2rem;
+    .count {
+      font-size: 50px;
+    }
+    .icon {
+      width: 70px;
+      height: 60px;
+      svg {
+        font-size: 2rem;
+      }
     }
   }
 `

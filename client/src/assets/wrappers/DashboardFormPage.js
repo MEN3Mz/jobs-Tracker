@@ -4,7 +4,7 @@ const Wrapper = styled.section`
   border-radius: var(--borderRadius);
   width: 100%;
   background: var(--white);
-  padding: 3rem 2rem 4rem;
+  padding: 1.75rem 1rem 2.25rem;
   box-shadow: var(--shadow-2);
   h3 {
     margin-top: 0;
@@ -52,6 +52,9 @@ const Wrapper = styled.section`
   }
   .clear-btn:hover {
     background: var(--black);
+  }
+  @media (min-width: 576px) {
+    padding: 2.5rem 1.5rem 3rem;
   }
   @media (min-width: 992px) {
     .form-center {

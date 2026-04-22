@@ -327,3 +327,12 @@ ul {
 .Toastify__toast {
   text-transform: capitalize;
 }
+
+.credit-footer {
+  width: 100%;
+  text-align: center;
+  color: var(--grey-500);
+  font-size: var(--small-text);
+  letter-spacing: var(--letterSpacing);
+  padding: 1rem 1.25rem 1.5rem;
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Logo, FormRow } from '../components';
+import { Logo, FormRow, CreditFooter } from '../components';
 import Wrapper from '../assets/wrappers/RegisterPage';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
@@ -116,6 +116,7 @@ function Register() {
         /button> <
         /p> <
         /form> <
+        CreditFooter / > <
         /Wrapper>
     );
 }

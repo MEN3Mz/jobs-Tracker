@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Wrapper from '../assets/wrappers/RegisterPage';
-import { Logo } from '../components';
+import { CreditFooter, Logo } from '../components';
 import customFetch from '../utils/axios';
 
 const VerifyEmail = () => {
@@ -50,6 +50,7 @@ const VerifyEmail = () => {
           </Link>
         )}
       </div>
+      <CreditFooter />
     </Wrapper>
   );
 };

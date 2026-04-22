@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { BigSidebar, Navbar, SmallSidebar } from '../../components';
+import { BigSidebar, CreditFooter, Navbar, SmallSidebar } from '../../components';
 import Wrapper from '../../assets/wrappers/SharedLayout';
 const SharedLayout = () => {
   return (
@@ -12,6 +12,7 @@ const SharedLayout = () => {
           <div className='dashboard-page'>
             <Outlet />
           </div>
+          <CreditFooter className='app-credit-footer' />
         </div>
       </main>
     </Wrapper>

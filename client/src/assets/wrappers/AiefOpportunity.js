@@ -8,7 +8,7 @@ const Wrapper = styled.article`
   box-shadow: var(--shadow-2);
 
   header {
-    padding: 1rem 1.5rem;
+    padding: 0.85rem 1rem;
     border-bottom: 1px solid var(--grey-100);
     display: grid;
     grid-template-columns: auto 1fr;
@@ -16,13 +16,13 @@ const Wrapper = styled.article`
   }
 
   .main-icon {
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     display: grid;
     place-items: center;
     background: var(--primary-500);
     border-radius: var(--borderRadius);
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     text-transform: uppercase;
     color: var(--white);
@@ -43,7 +43,7 @@ const Wrapper = styled.article`
   }
 
   .content {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem;
   }
 
   .content-center {
@@ -119,6 +119,20 @@ const Wrapper = styled.article`
 
   .btn-track:hover {
     background: var(--grey-900);
+  }
+
+  @media (min-width: 576px) {
+    header {
+      padding: 1rem 1.5rem;
+    }
+    .main-icon {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+    }
+    .content {
+      padding: 1.25rem 1.5rem;
+    }
   }
 
   @media (min-width: 576px) {

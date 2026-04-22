@@ -1,5 +1,5 @@
 import Wrapper from '../assets/wrappers/LandingPage';
-import { Logo } from '../components';
+import { CreditFooter, Logo } from '../components';
 import { Link } from 'react-router-dom';
 const Landing = () => {
   return (
@@ -21,6 +21,7 @@ const Landing = () => {
           </Link>
         </div>
       </div>
+      <CreditFooter />
     </Wrapper>
   );
 };

@@ -3,6 +3,9 @@ import styled from 'styled-components';
 const Wrapper = styled.article`
   background: var(--white);
   border-radius: var(--borderRadius);
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
   display: grid;
   grid-template-rows: 1fr auto;
   box-shadow: var(--shadow-2);
@@ -31,14 +34,19 @@ const Wrapper = styled.article`
     margin-right: 1rem;
   }
   .info {
+    min-width: 0;
     h5 {
       margin-bottom: 0.25rem;
+      word-break: break-word;
+      overflow-wrap: anywhere;
     }
     p {
       margin: 0;
       text-transform: capitalize;
       color: var(--grey-400);
       letter-spacing: var(--letterSpacing);
+      word-break: break-word;
+      overflow-wrap: anywhere;
     }
   }
   .source-tag {
@@ -96,7 +104,8 @@ const Wrapper = styled.article`
     text-transform: capitalize;
     letter-spacing: var(--letterSpacing);
     text-align: center;
-    min-width: 120px;
+    min-width: 0;
+    width: 100%;
     padding: 0.35rem 0.75rem;
     height: auto;
     margin-top: 0.5rem;
@@ -124,25 +133,33 @@ const Wrapper = styled.article`
     align-items: center;
     gap: 0.35rem;
     word-break: break-word;
+    overflow-wrap: anywhere;
   }
   .description,
   .notes,
   .instructions {
     color: var(--grey-700);
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
   footer {
     margin-top: 1rem;
+  }
+  .actions {
+    display: grid;
+    gap: 0.5rem;
   }
   .edit-btn,
   .delete-btn {
     letter-spacing: var(--letterSpacing);
     cursor: pointer;
     height: 30px;
+    width: 100%;
+    margin-right: 0;
   }
   .edit-btn {
     color: var(--green-dark);
     background: var(--green-light);
-    margin-right: 0.5rem;
   }
   .delete-btn {
     color: var(--red-dark);
@@ -163,6 +180,20 @@ const Wrapper = styled.article`
     }
     .content {
       padding: 1rem 1.5rem;
+    }
+    .status {
+      width: auto;
+      min-width: 120px;
+    }
+    .actions {
+      display: block;
+    }
+    .edit-btn,
+    .delete-btn {
+      width: auto;
+    }
+    .edit-btn {
+      margin-right: 0.5rem;
     }
   }
 `;

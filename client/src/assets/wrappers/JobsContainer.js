@@ -1,17 +1,24 @@
 import styled from 'styled-components'
 
 const Wrapper = styled.section`
-  margin-top: 4rem;
+  margin-top: 2rem;
   h2 {
     text-transform: none;
   }
   & > h5 {
     font-weight: 700;
+    margin-bottom: 1rem;
   }
   .jobs {
     display: grid;
     grid-template-columns: 1fr;
-    row-gap: 2rem;
+    row-gap: 1rem;
+  }
+  @media (min-width: 576px) {
+    margin-top: 3rem;
+    .jobs {
+      row-gap: 1.5rem;
+    }
   }
   @media (min-width: 992px) {
     .jobs {

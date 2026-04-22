@@ -3,6 +3,9 @@ import styled from 'styled-components';
 const Wrapper = styled.article`
   background: var(--white);
   border-radius: var(--borderRadius);
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
   display: grid;
   grid-template-rows: 1fr auto;
   box-shadow: var(--shadow-2);
@@ -33,6 +36,8 @@ const Wrapper = styled.article`
     margin-bottom: 0.25rem;
     letter-spacing: 0;
     text-transform: none;
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   .info p {
@@ -40,6 +45,8 @@ const Wrapper = styled.article`
     color: var(--grey-500);
     text-transform: capitalize;
     letter-spacing: var(--letterSpacing);
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   .content {
@@ -65,6 +72,8 @@ const Wrapper = styled.article`
     color: var(--grey-600);
     line-height: 1.6;
     text-transform: none;
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   .meta span {
@@ -77,6 +86,7 @@ const Wrapper = styled.article`
     color: var(--primary-600);
     text-transform: none;
     word-break: break-word;
+    overflow-wrap: anywhere;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -87,6 +97,8 @@ const Wrapper = styled.article`
     line-height: 1.7;
     margin-bottom: 1rem;
     text-transform: none;
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   .how-to-apply {
@@ -99,11 +111,8 @@ const Wrapper = styled.article`
   }
 
   footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
+    display: grid;
+    gap: 0.75rem;
     margin-top: 1.25rem;
   }
 
@@ -111,6 +120,12 @@ const Wrapper = styled.article`
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+  }
+
+  .btn-track,
+  .apply-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .btn-track {
@@ -132,6 +147,17 @@ const Wrapper = styled.article`
     }
     .content {
       padding: 1.25rem 1.5rem;
+    }
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn-track,
+    .apply-btn {
+      width: auto;
     }
   }
 

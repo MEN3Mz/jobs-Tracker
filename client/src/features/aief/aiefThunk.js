@@ -21,7 +21,6 @@ export const getAllAiefThunk = async (_, thunkAPI) => {
     targetGroup,
     sort,
     deadline,
-    industry,
   } = thunkAPI.getState().aief;
 
   const params = new URLSearchParams({
@@ -33,7 +32,6 @@ export const getAllAiefThunk = async (_, thunkAPI) => {
     compensation,
     targetGroup,
     deadline,
-    industry,
   });
 
   try {

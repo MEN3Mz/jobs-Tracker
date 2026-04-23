@@ -10,13 +10,11 @@ const initialFiltersState = {
   targetGroup: 'All',
   sort: 'latest',
   deadline: 'All',
-  industry: 'All',
   sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
   workTypeOptions: ['All', 'Full-Time', 'Part-Time', 'Remote', 'Internship'],
   compensationOptions: ['All', 'Paid', 'Unpaid', 'Not Specified', 'Not Mentioned'],
   targetGroupOptions: ['All'],
   majorOptions: ['All'],
-  industryOptions: ['All'],
 };
 
 const initialState = {
@@ -53,7 +51,6 @@ const aiefSlice = createSlice({
         targetGroup: initialFiltersState.targetGroup,
         sort: initialFiltersState.sort,
         deadline: initialFiltersState.deadline,
-        industry: initialFiltersState.industry,
         currentPage: 1,
       };
     },
@@ -64,7 +61,6 @@ const aiefSlice = createSlice({
       if (payload.majorOptions) state.majorOptions = payload.majorOptions;
       if (payload.targetGroupOptions)
         state.targetGroupOptions = payload.targetGroupOptions;
-      if (payload.industryOptions) state.industryOptions = payload.industryOptions;
     },
   },
   extraReducers: {
@@ -89,7 +85,6 @@ const aiefSlice = createSlice({
       state.isFiltersLoading = false;
       state.majorOptions = payload.filters?.majorOptions || ['All'];
       state.targetGroupOptions = payload.filters?.targetGroupOptions || ['All'];
-      state.industryOptions = payload.filters?.industryOptions || ['All'];
     },
     [getAiefFilters.rejected]: (state, { payload }) => {
       state.isFiltersLoading = false;

@@ -250,6 +250,10 @@ ul {
 .form-textarea {
   height: 7rem;
 }
+.form-multiselect {
+  min-height: 9rem;
+  height: auto;
+}
 ::placeholder {
   font-family: inherit;
   color: var(--grey-400);

@@ -1,23 +1,13 @@
 const AIEF = require("../models/AIEF");
 const { StatusCodes } = require("http-status-codes");
 const { NotFoundError } = require("../errors");
+const GUC_MAJORS = require("../utils/gucMajors");
 
 const getAiefFilterOptions = async () => {
-  const [industryOptions, majorOptions, targetGroupOptions] = await Promise.all([
-    AIEF.distinct("industryGroup", { industryGroup: { $ne: "" } }),
-    AIEF.distinct("requiredMajor"),
-    AIEF.distinct("targetGroup"),
-  ]);
+  const [targetGroupOptions] = await Promise.all([AIEF.distinct("targetGroup")]);
 
   return {
-    industryOptions: [
-      "All",
-      ...industryOptions.filter((value) => value && value !== "All").sort(),
-    ],
-    majorOptions: [
-      "All",
-      ...majorOptions.filter((value) => value && value !== "All").sort(),
-    ],
+    majorOptions: ["All", ...GUC_MAJORS],
     targetGroupOptions: [
       "All",
       ...targetGroupOptions.filter((value) => value && value !== "All").sort(),
@@ -34,7 +24,6 @@ const getAllAIEF = async (req, res) => {
     targetGroup,
     sort,
     deadline,
-    industry,
     page = 1,
     limit = 10,
   } = req.query;
@@ -61,12 +50,8 @@ const getAllAIEF = async (req, res) => {
     }
   }
 
-  if (industry && industry !== "All") {
-    queryObject.industryGroup = industry;
-  }
-
   if (major && major !== "All") {
-    queryObject.requiredMajor = { $in: [major, "All"] };
+    queryObject.requiredMajor = { $in: [major, "All GUC majors"] };
   }
 
   if (targetGroup && targetGroup !== "All") {

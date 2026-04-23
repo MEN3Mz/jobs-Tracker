@@ -14,13 +14,11 @@ const AiefSearchContainer = () => {
     targetGroup,
     sort,
     deadline,
-    industry,
     sortOptions,
     workTypeOptions,
     compensationOptions,
     targetGroupOptions,
     majorOptions,
-    industryOptions = ['All'],
   } = useSelector((store) => store.aief);
 
   const dispatch = useDispatch();
@@ -45,13 +43,6 @@ const AiefSearchContainer = () => {
             labelText='location'
             value={location}
             handleChange={handleSearch}
-          />
-          <FormRowSelect
-            labelText='industry'
-            name='industry'
-            value={industry}
-            handleChange={handleSearch}
-            list={industryOptions}
           />
           <FormRowSelect
             labelText='major'

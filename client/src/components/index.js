@@ -4,6 +4,7 @@ import BigSidebar from './BigSidebar';
 import ChartsContainer from './ChartsContainer';
 import CreditFooter from './CreditFooter';
 import FormRow from './FormRow';
+import FormRowMultiSelect from './FormRowMultiSelect';
 import FormRowSelect from './FormRowSelect';
 import FormRowTextArea from './FormRowTextArea';
 import JobsContainer from './JobsContainer';
@@ -19,6 +20,7 @@ export {
   CreditFooter,
   Logo,
   FormRow,
+  FormRowMultiSelect,
   Navbar,
   SmallSidebar,
   BigSidebar,

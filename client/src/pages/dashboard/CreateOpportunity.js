@@ -2,19 +2,24 @@ import { useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { FormRow, FormRowSelect, FormRowTextArea } from '../../components';
+import {
+  FormRow,
+  FormRowMultiSelect,
+  FormRowSelect,
+  FormRowTextArea,
+} from '../../components';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 import customFetch from '../../utils/axios';
+import gucMajors from '../../utils/gucMajors';
 
 const initialState = {
   companyName: '',
-  industry: '',
   website: '',
   internshipTitle: '',
   department: '',
   jobDescription: '',
   qualifications: '',
-  requiredMajor: '',
+  requiredMajor: [],
   targetGroup: '',
   workType: 'Internship',
   workDays: '',
@@ -34,15 +39,19 @@ const parseList = (value) =>
     .map((item) => item.trim())
     .filter(Boolean);
 
+const getSelectedValues = (options) =>
+  Array.from(options)
+    .filter((option) => option.selected)
+    .map((option) => option.value);
+
 const mapOpportunityToFormValues = (opportunity = {}) => ({
   companyName: opportunity.companyName || '',
-  industry: opportunity.industry || '',
   website: opportunity.website || '',
   internshipTitle: opportunity.internshipTitle || '',
   department: opportunity.department?.join(', ') || '',
   jobDescription: opportunity.jobDescription || '',
   qualifications: opportunity.qualifications || '',
-  requiredMajor: opportunity.requiredMajor?.join(', ') || '',
+  requiredMajor: opportunity.requiredMajor || [],
   targetGroup: opportunity.targetGroup?.join(', ') || '',
   workType: opportunity.workType || 'Internship',
   workDays: opportunity.workDays ?? '',
@@ -101,6 +110,14 @@ const CreateOpportunity = () => {
     }));
   };
 
+  const handleMajorChange = (e) => {
+    const selectedMajors = getSelectedValues(e.target.options);
+    setValues((currentValues) => ({
+      ...currentValues,
+      requiredMajor: selectedMajors,
+    }));
+  };
+
   const clearForm = () => {
     setValues(initialState);
   };
@@ -115,13 +132,12 @@ const CreateOpportunity = () => {
 
     const payload = {
       companyName: values.companyName.trim(),
-      industry: values.industry.trim(),
       website: values.website.trim(),
       internshipTitle: values.internshipTitle.trim(),
       department: parseList(values.department),
       jobDescription: values.jobDescription.trim(),
       qualifications: values.qualifications.trim(),
-      requiredMajor: parseList(values.requiredMajor),
+      requiredMajor: values.requiredMajor,
       targetGroup: parseList(values.targetGroup),
       workType: values.workType,
       workDays: Number(values.workDays) || 0,
@@ -182,12 +198,6 @@ const CreateOpportunity = () => {
             name='internshipTitle'
             labelText='opportunity title'
             value={values.internshipTitle}
-            handleChange={handleChange}
-          />
-          <FormRow
-            type='text'
-            name='industry'
-            value={values.industry}
             handleChange={handleChange}
           />
           <FormRow
@@ -262,12 +272,12 @@ const CreateOpportunity = () => {
             value={values.department}
             handleChange={handleChange}
           />
-          <FormRow
-            type='text'
+          <FormRowMultiSelect
             name='requiredMajor'
-            labelText='required majors (comma separated)'
+            labelText='required majors'
             value={values.requiredMajor}
-            handleChange={handleChange}
+            handleChange={handleMajorChange}
+            list={gucMajors}
           />
           <FormRow
             type='text'

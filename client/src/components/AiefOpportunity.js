@@ -47,7 +47,6 @@ const AiefOpportunity = ({
   compensation,
   transportation,
   deadline,
-  industry,
   requiredMajor,
   targetGroup,
   website,
@@ -73,7 +72,6 @@ const AiefOpportunity = ({
           jobLocation: location || 'Cairo',
           jobType: mapWorkType(workType),
           status: "didn't yet",
-          industry,
           compensation,
           transportation,
           deadline,
@@ -143,11 +141,10 @@ const AiefOpportunity = ({
           </div>
           <div className='meta'>
             <p>
-              <span>Industry:</span> {industry || 'Not specified'}
-            </p>
-            <p>
               <span>Majors:</span>{' '}
-              {requiredMajor?.length ? requiredMajor.join(', ') : 'Open to all'}
+              {requiredMajor?.length
+                ? requiredMajor.join(', ')
+                : 'Open to all GUC majors'}
             </p>
             <p>
               <span>Target group:</span>{' '}

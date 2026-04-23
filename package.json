@@ -7,7 +7,8 @@
     "start": "nodemon app.js",
     "populate:aief": "node populateAIEF.js",
     "backfill:aief-jobs": "node backfillAiefJobs.js",
-    "backfill:aief-industries": "node backfillAiefIndustryGroups.js"
+    "backfill:aief-industries": "node backfillAiefIndustryGroups.js",
+    "backfill:aief-majors": "node backfillAiefMajors.js"
   },
   "author": "",
   "license": "ISC",

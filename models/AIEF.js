@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const getAiefIndustryGroup = require("../utils/aiefIndustryGroup");
+const GUC_MAJORS = require("../utils/gucMajors");
+const normalizeAiefMajors = require("../utils/normalizeAiefMajors");
 
 const AIEFschema = new mongoose.Schema(
   {
@@ -45,6 +47,10 @@ const AIEFschema = new mongoose.Schema(
     requiredMajor: {
       type: [String],
       default: [],
+      validate: {
+        validator: (majors) => majors.every((major) => GUC_MAJORS.includes(major)),
+        message: "Please select only supported GUC majors",
+      },
     },
     targetGroup: {
       type: [String],
@@ -98,14 +104,29 @@ const AIEFschema = new mongoose.Schema(
 );
 
 AIEFschema.pre("save", function (next) {
+  this.requiredMajor = normalizeAiefMajors(this.requiredMajor);
   this.industryGroup = getAiefIndustryGroup(this.industry);
   next();
 });
 
 AIEFschema.pre("findOneAndUpdate", function (next) {
   const update = this.getUpdate() || {};
+  const nextMajors =
+    update.requiredMajor ??
+    update.$set?.requiredMajor ??
+    update.$setOnInsert?.requiredMajor;
   const nextIndustry =
     update.industry ?? update.$set?.industry ?? update.$setOnInsert?.industry;
+
+  if (nextMajors !== undefined) {
+    const normalizedMajors = normalizeAiefMajors(nextMajors);
+
+    if (update.$set) {
+      update.$set.requiredMajor = normalizedMajors;
+    } else {
+      update.requiredMajor = normalizedMajors;
+    }
+  }
 
   if (nextIndustry !== undefined) {
     const industryGroup = getAiefIndustryGroup(nextIndustry);
@@ -116,6 +137,10 @@ AIEFschema.pre("findOneAndUpdate", function (next) {
       update.industryGroup = industryGroup;
     }
 
+    this.setUpdate(update);
+  }
+
+  if (nextMajors !== undefined) {
     this.setUpdate(update);
   }
 

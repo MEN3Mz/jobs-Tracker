@@ -71,7 +71,7 @@ const AddJob = () => {
   return (
     <Wrapper>
       <form className='form'>
-        <h3>{isEditing ? 'edit job' : 'add job'}</h3>
+        <h3>{isEditing ? 'edit job' : 'add to my jobs'}</h3>
         <div className='form-center'>
           {isEditing && (
             <div className='edit-job-reference'>

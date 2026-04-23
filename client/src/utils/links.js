@@ -14,7 +14,7 @@ const getLinks = (role) => {
       path: 'opportunities',
       icon: <BsGlobe2 />,
     },
-    { id: 4, text: 'add job', path: 'add-job', icon: <FaWpforms /> },
+    { id: 4, text: 'add to my jobs', path: 'add-job', icon: <FaWpforms /> },
     { id: 5, text: 'profile', path: 'profile', icon: <ImProfile /> },
   ];
 

@@ -12,11 +12,16 @@ const sendVerificationEmail = require("../utils/sendVerificationEmail");
 const allowedUniversityDomainSuffixes = ["guc.edu.eg", "giu-uni.de"];
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, location } = req.body;
   const normalizedEmail = email?.trim().toLowerCase();
+  const normalizedLocation = location?.trim();
 
   if (!normalizedEmail) {
     throw new BadRequestError("Please provide email");
+  }
+
+  if (!normalizedLocation) {
+    throw new BadRequestError("Please provide city");
   }
 
   const emailDomain = normalizedEmail.split("@")[1];
@@ -37,6 +42,7 @@ const register = async (req, res) => {
     name,
     email: normalizedEmail,
     password,
+    location: normalizedLocation,
     verificationToken,
   });
   await sendVerificationEmail({

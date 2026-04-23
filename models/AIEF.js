@@ -70,13 +70,13 @@ const AIEFschema = new mongoose.Schema(
     },
     transportation: {
       type: String,
-      enum: ["Provided", "Not Provided"],
-      default: "Not Provided",
+      enum: ["Provided", "Not Provided", "Not Mentioned"],
+      default: "Not Mentioned",
     },
     compensation: {
       type: String,
-      enum: ["Paid", "Unpaid", "Not Specified"],
-      default: "Not Specified",
+      enum: ["Paid", "Unpaid", "Not Specified", "Not Mentioned"],
+      default: "Not Mentioned",
     },
     durationInWeeks: {
       type: Number,

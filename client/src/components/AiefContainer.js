@@ -61,7 +61,7 @@ const AiefContainer = () => {
   if (opportunities.length === 0) {
     return (
       <Wrapper>
-        <h2>No AIEF opportunities match these filters yet.</h2>
+        <h2>No opportunities match these filters yet.</h2>
       </Wrapper>
     );
   }

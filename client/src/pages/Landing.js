@@ -12,7 +12,7 @@ const Landing = () => {
             track every <span>application</span> with jobzy
           </h1>
           <p>
-            Keep your internship applications, AIEF opportunities, and follow-up
+            Keep your internship applications, opportunities, and follow-up
             progress in one place so you can apply without losing track of what
             comes next.
           </p>

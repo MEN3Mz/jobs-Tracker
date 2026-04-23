@@ -1,22 +1,26 @@
 import {
   FaBriefcase,
   FaCalendarAlt,
+  FaEdit,
   FaEnvelope,
   FaExternalLinkAlt,
   FaLocationArrow,
   FaMoneyBillWave,
+  FaTrashAlt,
 } from 'react-icons/fa';
 import moment from 'moment';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Wrapper from '../assets/wrappers/AiefOpportunity';
 import JobInfo from './JobInfo';
 import AiefApplyModal from './AiefApplyModal';
 import { createJob } from '../features/job/jobSlice';
+import customFetch from '../utils/axios';
 
 const formatDate = (dateValue) => {
   if (!dateValue) return 'Not specified';
-  return moment(dateValue).format('MMM Do, YYYY');
+  return moment(dateValue).format('DD/MM/YYYY');
 };
 
 const extractEmail = (value) => {
@@ -35,11 +39,13 @@ const mapWorkType = (value) => {
 };
 
 const AiefOpportunity = ({
+  _id,
   companyName,
   internshipTitle,
   location,
   workType,
   compensation,
+  transportation,
   deadline,
   industry,
   requiredMajor,
@@ -47,11 +53,15 @@ const AiefOpportunity = ({
   website,
   howToApply,
   jobDescription,
+  qualifications,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
   const dispatch = useDispatch();
+  const { user } = useSelector((store) => store.user);
   const contactEmail = extractEmail(howToApply);
+  const isAdmin = user?.role === 'admin';
 
   const saveToJobs = async () => {
     setIsSaving(true);
@@ -65,6 +75,7 @@ const AiefOpportunity = ({
           status: "didn't yet",
           industry,
           compensation,
+          transportation,
           deadline,
           website,
           contactEmail,
@@ -89,6 +100,28 @@ const AiefOpportunity = ({
     }
 
     setIsModalOpen(false);
+  };
+
+  const removeOpportunity = async () => {
+    if (!_id || isRemoving) return;
+
+    const confirmed = window.confirm(
+      `Remove "${internshipTitle}" from opportunities?`
+    );
+
+    if (!confirmed) return;
+
+    setIsRemoving(true);
+    try {
+      await customFetch.delete(`/aief/${_id}`);
+      window.location.reload();
+    } catch (error) {
+      setIsRemoving(false);
+      window.alert(
+        error?.response?.data?.msg || 'Unable to remove opportunity'
+      );
+      return;
+    }
   };
 
   return (
@@ -120,6 +153,9 @@ const AiefOpportunity = ({
               <span>Target group:</span>{' '}
               {targetGroup?.length ? targetGroup.join(', ') : 'Open to all'}
             </p>
+            <p>
+              <span>Transportation:</span> {transportation || 'Not specified'}
+            </p>
             {contactEmail && (
               <p>
                 <span>Contact:</span>{' '}
@@ -137,7 +173,16 @@ const AiefOpportunity = ({
               </p>
             )}
           </div>
-          {jobDescription && <p className='description'>{jobDescription}</p>}
+          {jobDescription && (
+            <p className='description'>
+              <span>Responsibilities:</span> {jobDescription}
+            </p>
+          )}
+          {qualifications && (
+            <p className='description'>
+              <span>Qualifications:</span> {qualifications}
+            </p>
+          )}
           <p className='how-to-apply'>
             <span>How to apply:</span> {howToApply || 'Check the company website'}
           </p>
@@ -157,6 +202,22 @@ const AiefOpportunity = ({
             >
               apply in popup <FaExternalLinkAlt />
             </button>
+            {isAdmin && (
+              <Link to={`/edit-opportunity/${_id}`} className='btn edit-opportunity-btn'>
+                edit opportunity <FaEdit />
+              </Link>
+            )}
+            {isAdmin && (
+              <button
+                type='button'
+                className='btn remove-btn'
+                onClick={removeOpportunity}
+                disabled={isRemoving}
+              >
+                {isRemoving ? 'removing...' : 'remove opportunity'}{' '}
+                <FaTrashAlt />
+              </button>
+            )}
           </footer>
         </div>
       </Wrapper>

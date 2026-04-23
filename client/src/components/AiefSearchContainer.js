@@ -37,7 +37,7 @@ const AiefSearchContainer = () => {
   return (
     <Wrapper>
       <form className='form'>
-        <h4>AIEF opportunities</h4>
+        <h4>opportunities</h4>
         <div className='form-center'>
           <FormRow
             type='text'

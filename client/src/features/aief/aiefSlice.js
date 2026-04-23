@@ -13,7 +13,7 @@ const initialFiltersState = {
   industry: 'All',
   sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
   workTypeOptions: ['All', 'Full-Time', 'Part-Time', 'Remote', 'Internship'],
-  compensationOptions: ['All', 'Paid', 'Unpaid', 'Not Specified'],
+  compensationOptions: ['All', 'Paid', 'Unpaid', 'Not Specified', 'Not Mentioned'],
   targetGroupOptions: ['All'],
   majorOptions: ['All'],
   industryOptions: ['All'],

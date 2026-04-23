@@ -101,6 +101,11 @@ const Wrapper = styled.article`
     overflow-wrap: anywhere;
   }
 
+  .description span {
+    font-weight: 600;
+    color: var(--grey-900);
+  }
+
   .how-to-apply {
     margin-top: 1rem;
   }
@@ -122,8 +127,17 @@ const Wrapper = styled.article`
     gap: 0.5rem;
   }
 
+  .edit-opportunity-btn {
+    background: var(--primary-500);
+    color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   .btn-track,
-  .apply-btn {
+  .apply-btn,
+  .edit-opportunity-btn {
     width: 100%;
     justify-content: center;
   }
@@ -134,6 +148,19 @@ const Wrapper = styled.article`
 
   .btn-track:hover {
     background: var(--grey-900);
+  }
+
+  .remove-btn {
+    background: var(--red-light);
+    color: var(--red-dark);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .remove-btn:hover {
+    background: var(--red-dark);
+    color: var(--white);
   }
 
   @media (min-width: 576px) {
@@ -156,7 +183,9 @@ const Wrapper = styled.article`
       flex-wrap: wrap;
     }
     .btn-track,
-    .apply-btn {
+    .apply-btn,
+    .edit-opportunity-btn,
+    .remove-btn {
       width: auto;
     }
   }

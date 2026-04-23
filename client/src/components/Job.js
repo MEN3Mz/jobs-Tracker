@@ -30,6 +30,7 @@ const Job = ({
   status,
   industry,
   compensation,
+  transportation,
   deadline,
   website,
   contactEmail,
@@ -42,9 +43,10 @@ const Job = ({
 }) => {
   const dispatch = useDispatch();
 
-  const date = moment(createdAt).format('MMM Do, YYYY');
+  const date = moment(createdAt).format('DD/MM/YYYY');
   const statusClassName = getStatusClassName(status);
-  const deadlineText = deadline ? moment(deadline).format('MMM Do, YYYY') : null;
+  const deadlineText = deadline ? moment(deadline).format('DD/MM/YYYY') : null;
+  const sourceLabel = sourceType === 'AIEF' ? 'Opportunity' : sourceType;
 
   return (
     <Wrapper>
@@ -53,7 +55,7 @@ const Job = ({
         <div className='info'>
           <h5>{position}</h5>
           <p>{company}</p>
-          {sourceType && <small className='source-tag'>{sourceType}</small>}
+          {sourceLabel && <small className='source-tag'>{sourceLabel}</small>}
         </div>
       </header>
       <div className='content'>
@@ -70,6 +72,11 @@ const Job = ({
           {industry && (
             <p>
               <span>Industry:</span> {industry}
+            </p>
+          )}
+          {transportation && (
+            <p>
+              <span>Transportation:</span> {transportation}
             </p>
           )}
           {deadlineText && (
@@ -131,6 +138,7 @@ const Job = ({
                     status,
                     industry,
                     compensation,
+                    transportation,
                     deadline,
                     website,
                     contactEmail,

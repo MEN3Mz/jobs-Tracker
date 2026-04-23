@@ -15,6 +15,7 @@ const pickJobFields = (body = {}, options = {}) => {
         'jobLocation',
         'industry',
         'compensation',
+        'transportation',
         'deadline',
         'website',
         'contactEmail',

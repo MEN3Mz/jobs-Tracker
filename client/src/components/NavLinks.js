@@ -1,7 +1,11 @@
 import { NavLink } from 'react-router-dom';
-import links from '../utils/links';
+import { useSelector } from 'react-redux';
+import getLinks from '../utils/links';
 
 const NavLinks = ({ toggleSidebar }) => {
+  const { user } = useSelector((store) => store.user);
+  const links = getLinks(user?.role);
+
   return (
     <div className='nav-links'>
       {links.map((link) => {

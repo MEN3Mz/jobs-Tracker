@@ -41,6 +41,11 @@ const JobSchema = new mongoose.Schema({
         default: '',
         trim: true,
     },
+    transportation: {
+        type: String,
+        default: '',
+        trim: true,
+    },
     deadline: {
         type: Date,
     },

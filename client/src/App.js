@@ -12,6 +12,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   Aief,
+  CreateOpportunity,
   Profile,
   AddJob,
   AllJobs,
@@ -32,7 +33,9 @@ function App() {
         >
           <Route index element={<Stats />} />
           <Route path='all-jobs' element={<AllJobs />} />
-          <Route path='aief-opportunities' element={<Aief />} />
+          <Route path='opportunities' element={<Aief />} />
+          <Route path='create-opportunity' element={<CreateOpportunity />} />
+          <Route path='edit-opportunity/:id' element={<CreateOpportunity />} />
           <Route path='add-job' element={<AddJob />} />
           <Route path='profile' element={<Profile />} />
         </Route>

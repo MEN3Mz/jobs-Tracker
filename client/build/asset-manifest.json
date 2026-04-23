@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.046fd72d.css",
-    "main.js": "/static/js/main.c7627b85.js",
+    "main.js": "/static/js/main.cffc2cf2.js",
     "static/media/jobzy-logo-transparent.png": "/static/media/jobzy-logo-transparent.1a272590d93f1648a2b6.png",
     "static/media/not-found.svg": "/static/media/not-found.5cfa24fa5e3ca7dffe02f358358ea9df.svg",
     "index.html": "/index.html",
     "main.046fd72d.css.map": "/static/css/main.046fd72d.css.map",
-    "main.c7627b85.js.map": "/static/js/main.c7627b85.js.map"
+    "main.cffc2cf2.js.map": "/static/js/main.cffc2cf2.js.map"
   },
   "entrypoints": [
     "static/css/main.046fd72d.css",
-    "static/js/main.c7627b85.js"
+    "static/js/main.cffc2cf2.js"
   ]
 }

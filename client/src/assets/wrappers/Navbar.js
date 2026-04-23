@@ -21,11 +21,13 @@ const Wrapper = styled.nav`
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+    min-width: 0;
   }
   .brand-center {
     flex: 1;
     display: flex;
     justify-content: center;
+    min-width: 0;
   }
   .toggle-btn {
     background: transparent;
@@ -39,6 +41,8 @@ const Wrapper = styled.nav`
   background: var(--white);
   .btn-container {
     position: relative;
+    min-width: 0;
+    flex-shrink: 1;
   }
   .btn {
     display: flex;
@@ -47,6 +51,14 @@ const Wrapper = styled.nav`
     gap: 0 0.5rem;
     position: relative;
     box-shadow: var(--shadow-2);
+    min-width: 0;
+    max-width: min(46vw, 210px);
+  }
+  .user-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .dropdown {
@@ -88,6 +100,9 @@ const Wrapper = styled.nav`
     }
     .logo-nav {
       width: 156px;
+    }
+    .btn {
+      max-width: none;
     }
   }
 `

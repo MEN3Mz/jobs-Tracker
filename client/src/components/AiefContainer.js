@@ -11,6 +11,8 @@ import AiefOpportunity from './AiefOpportunity';
 import AiefPageBtnContainer from './AiefPageBtnContainer';
 
 const SEARCH_DELAY_MS = 1200;
+const buildOpportunityKey = (companyName = '', internshipTitle = '') =>
+  `${companyName}::${internshipTitle}`;
 
 const AiefContainer = () => {
   const {
@@ -26,7 +28,8 @@ const AiefContainer = () => {
     targetGroup,
     sort,
     deadline,
-    industry,
+    savedOpportunityIds,
+    savedOpportunityKeys,
   } = useSelector((store) => store.aief);
 
   const dispatch = useDispatch();
@@ -56,7 +59,8 @@ const AiefContainer = () => {
     targetGroup,
     sort,
     deadline,
-    industry,
+    savedOpportunityIds,
+    savedOpportunityKeys,
   ]);
 
   if (isLoading) {
@@ -71,13 +75,30 @@ const AiefContainer = () => {
     );
   }
 
+  const prioritizedOpportunities = [...opportunities].sort((first, second) => {
+    const firstIsSaved =
+      savedOpportunityIds.includes(first._id) ||
+      savedOpportunityKeys.includes(
+        buildOpportunityKey(first.companyName, first.internshipTitle)
+      );
+    const secondIsSaved =
+      savedOpportunityIds.includes(second._id) ||
+      savedOpportunityKeys.includes(
+        buildOpportunityKey(second.companyName, second.internshipTitle)
+      );
+
+    if (firstIsSaved === secondIsSaved) return 0;
+
+    return firstIsSaved ? 1 : -1;
+  });
+
   return (
     <Wrapper>
       <h5>
         {totalJobs} opportunit{totalJobs === 1 ? 'y' : 'ies'} found
       </h5>
       <div className='jobs'>
-        {opportunities.map((opportunity) => {
+        {prioritizedOpportunities.map((opportunity) => {
           return <AiefOpportunity key={opportunity._id} {...opportunity} />;
         })}
       </div>

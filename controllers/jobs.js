@@ -63,6 +63,12 @@ const pickJobFields = (body = {}, options = {}) => {
     return jobData
 }
 
+const buildOpportunityKey = (company = '', position = '') =>
+    `${company}::${position}`.trim()
+
+const escapeRegex = (value = '') =>
+    value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
 
 const getAllJobs = async(req, res) => {
     const { search, status, jobType, sort } = req.query
@@ -77,9 +83,13 @@ const getAllJobs = async(req, res) => {
         ]
     }
     if (status && status !== 'all') {
-        queryObject.status = status === 'submitted'
-            ? { $in: ['submitted', 'applied'] }
-            : status
+        if (status === 'submitted') {
+            queryObject.status = { $in: ['submitted', 'applied'] }
+        } else if (status === "didn't apply yet") {
+            queryObject.status = { $in: ["didn't apply yet", "didn't yet", 'pending'] }
+        } else {
+            queryObject.status = status
+        }
     }
     if (jobType && jobType !== 'all') {
         queryObject.jobType = jobType
@@ -103,6 +113,28 @@ const getAllJobs = async(req, res) => {
     const numOfPages = Math.ceil(totalJobs / limit)
     res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages })
 }
+
+const getSavedOpportunityRefs = async(req, res) => {
+    const jobs = await Job.find({
+        createdBy: req.user.userId,
+        sourceType: 'AIEF',
+    }).select('company position sourceOpportunityId').lean()
+
+    const savedOpportunityIds = [...new Set(
+        jobs
+            .map((job) => job.sourceOpportunityId)
+            .filter(Boolean)
+    )]
+
+    const savedOpportunityKeys = [...new Set(
+        jobs
+            .map((job) => buildOpportunityKey(job.company, job.position))
+            .filter((value) => value !== '::')
+    )]
+
+    res.status(StatusCodes.OK).json({ savedOpportunityIds, savedOpportunityKeys })
+}
+
 const getJob = async(req, res) => {
     const {
         user: { userId },
@@ -127,6 +159,32 @@ const createJob = async(req, res) => {
         throw new BadRequestError('Company, Position and Job Location fields cannot be empty')
     }
 
+    if (jobData.sourceType === 'AIEF') {
+        const duplicateChecks = []
+
+        if (jobData.sourceOpportunityId) {
+            duplicateChecks.push({
+                sourceType: 'AIEF',
+                sourceOpportunityId: jobData.sourceOpportunityId,
+            })
+        }
+
+        duplicateChecks.push({
+            sourceType: 'AIEF',
+            company: { $regex: `^${escapeRegex(jobData.company)}$`, $options: 'i' },
+            position: { $regex: `^${escapeRegex(jobData.position)}$`, $options: 'i' },
+        })
+
+        const existingOpportunityJob = await Job.findOne({
+            createdBy: req.user.userId,
+            $or: duplicateChecks,
+        })
+
+        if (existingOpportunityJob) {
+            throw new BadRequestError('This opportunity is already in your jobs')
+        }
+    }
+
     jobData.createdBy = req.user.userId
     const job = await Job.create(jobData)
     res.status(StatusCodes.CREATED).json({ job, msg: 'Job Created' })
@@ -140,7 +198,11 @@ const updateJob = async(req, res) => {
 
     const jobData = pickJobFields(req.body, { partial: true })
 
-    if (!jobData.company || !jobData.position || !jobData.jobLocation) {
+    if (
+        (Object.prototype.hasOwnProperty.call(jobData, 'company') && !jobData.company) ||
+        (Object.prototype.hasOwnProperty.call(jobData, 'position') && !jobData.position) ||
+        (Object.prototype.hasOwnProperty.call(jobData, 'jobLocation') && !jobData.jobLocation)
+    ) {
         throw new BadRequestError('Company, Position and Job Location fields cannot be empty')
     }
 
@@ -184,7 +246,7 @@ const showStats = async(req, res) => {
 
     // 3. Set defaults so the frontend always gets the expected keys
     const defaultStats = {
-        didntYet: stats["didn't yet"] || stats.pending || 0,
+        didntYet: stats["didn't apply yet"] || stats["didn't yet"] || stats.pending || 0,
         submitted: stats.submitted || stats.applied || 0,
         interview: stats.interview || 0,
         accepted: stats.accepted || 0,
@@ -221,6 +283,7 @@ module.exports = {
     createJob,
     deleteJob,
     getAllJobs,
+    getSavedOpportunityRefs,
     updateJob,
     getJob,
     showStats

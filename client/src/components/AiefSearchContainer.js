@@ -73,10 +73,11 @@ const AiefSearchContainer = () => {
             list={compensationOptions}
           />
           <FormRow
-            type='date'
+            type='text'
             name='deadline'
             labelText='deadline'
             value={deadline === 'All' ? '' : deadline}
+            placeholder='d/m/yyyy'
             handleChange={handleSearch}
           />
           <FormRowSelect

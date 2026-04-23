@@ -24,6 +24,27 @@ const Wrapper = styled.section`
     display: grid;
     row-gap: 0.5rem;
   }
+  .edit-job-reference {
+    grid-column: 1 / -1;
+    background: var(--grey-50);
+    border: 1px solid var(--grey-100);
+    border-radius: var(--borderRadius);
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.25rem;
+  }
+  .edit-job-reference p {
+    margin: 0;
+    color: var(--grey-700);
+    text-transform: none;
+    line-height: 1.6;
+  }
+  .edit-job-reference p + p {
+    margin-top: 0.35rem;
+  }
+  .edit-job-reference span {
+    color: var(--grey-900);
+    font-weight: 700;
+  }
   .form-row-textarea {
     grid-column: 1 / -1;
   }

@@ -4,6 +4,7 @@ const FormRow = ({
   value,
   handleChange,
   labelText,
+  placeholder = '',
   readOnly = false,
   disabled = false,
   title = '',
@@ -23,6 +24,7 @@ const FormRow = ({
         readOnly={readOnly}
         disabled={disabled}
         title={title}
+        placeholder={placeholder}
       />
     </div>
   );

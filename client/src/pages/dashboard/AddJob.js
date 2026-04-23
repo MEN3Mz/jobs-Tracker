@@ -31,7 +31,7 @@ const AddJob = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!position || !company || !jobLocation) {
+    if (!isEditing && (!position || !company || !jobLocation)) {
       toast.error('Please fill out all fields');
       return;
     }
@@ -39,7 +39,7 @@ const AddJob = () => {
       dispatch(
         editJob({
           jobId: editJobId,
-          job: { position, company, jobLocation, jobType, status, notes },
+          job: { status, notes },
         })
       )
         .unwrap()
@@ -73,28 +73,41 @@ const AddJob = () => {
       <form className='form'>
         <h3>{isEditing ? 'edit job' : 'add job'}</h3>
         <div className='form-center'>
-          {/* position */}
-          <FormRow
-            type='text'
-            name='position'
-            value={position}
-            handleChange={handleJobInput}
-          />
-          {/* company */}
-          <FormRow
-            type='text'
-            name='company'
-            value={company}
-            handleChange={handleJobInput}
-          />
-          {/* jobLocation */}
-          <FormRow
-            type='text'
-            name='jobLocation'
-            labelText='job location'
-            value={jobLocation}
-            handleChange={handleJobInput}
-          />
+          {isEditing && (
+            <div className='edit-job-reference'>
+              <p>
+                <span>Editing:</span> {position}
+              </p>
+              <p>
+                <span>Company:</span> {company}
+              </p>
+            </div>
+          )}
+          {!isEditing && (
+            <FormRow
+              type='text'
+              name='position'
+              value={position}
+              handleChange={handleJobInput}
+            />
+          )}
+          {!isEditing && (
+            <FormRow
+              type='text'
+              name='company'
+              value={company}
+              handleChange={handleJobInput}
+            />
+          )}
+          {!isEditing && (
+            <FormRow
+              type='text'
+              name='jobLocation'
+              labelText='job location'
+              value={jobLocation}
+              handleChange={handleJobInput}
+            />
+          )}
           <FormRowTextArea
             name='notes'
             labelText='notes'
@@ -102,21 +115,21 @@ const AddJob = () => {
             handleChange={handleJobInput}
             placeholder='Add interviewer names, rejection reasons, feedback, next steps, or anything useful to remember'
           />
-          {/* status */}
           <FormRowSelect
             name='status'
             value={status}
             handleChange={handleJobInput}
             list={statusOptions}
           />
-          {/* job type*/}
-          <FormRowSelect
-            name='jobType'
-            labelText='job type'
-            value={jobType}
-            handleChange={handleJobInput}
-            list={jobTypeOptions}
-          />
+          {!isEditing && (
+            <FormRowSelect
+              name='jobType'
+              labelText='job type'
+              value={jobType}
+              handleChange={handleJobInput}
+              list={jobTypeOptions}
+            />
+          )}
           <div className='btn-container'>
             <button
               type='button'

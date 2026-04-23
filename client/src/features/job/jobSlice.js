@@ -10,8 +10,8 @@ const initialState = {
   notes: '',
   jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
   jobType: 'full-time',
-  statusOptions: ["didn't yet", 'submitted', 'accepted', 'rejected', 'interview'],
-  status: "didn't yet",
+  statusOptions: ["didn't apply yet", 'submitted', 'accepted', 'rejected', 'interview'],
+  status: "didn't apply yet",
   isEditing: false,
   editJobId: '',
 };

@@ -13,8 +13,8 @@ const JobSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["didn't yet", 'submitted', 'accepted', 'rejected', 'interview'],
-        default: "didn't yet",
+        enum: ["didn't apply yet", 'submitted', 'accepted', 'rejected', 'interview'],
+        default: "didn't apply yet",
     },
     createdBy: {
         type: mongoose.Types.ObjectId,

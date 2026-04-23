@@ -8,7 +8,8 @@
     "populate:aief": "node populateAIEF.js",
     "backfill:aief-jobs": "node backfillAiefJobs.js",
     "backfill:aief-industries": "node backfillAiefIndustryGroups.js",
-    "backfill:aief-majors": "node backfillAiefMajors.js"
+    "backfill:aief-majors": "node backfillAiefMajors.js",
+    "backfill:aief-compensation": "node backfillAiefCompensation.js"
   },
   "author": "",
   "license": "ISC",

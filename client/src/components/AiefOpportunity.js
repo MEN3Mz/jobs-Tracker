@@ -16,11 +16,12 @@ import Wrapper from '../assets/wrappers/AiefOpportunity';
 import JobInfo from './JobInfo';
 import AiefApplyModal from './AiefApplyModal';
 import { createJob } from '../features/job/jobSlice';
+import { markOpportunitySaved } from '../features/aief/aiefSlice';
 import customFetch from '../utils/axios';
 
 const formatDate = (dateValue) => {
   if (!dateValue) return 'Not specified';
-  return moment(dateValue).format('DD/MM/YYYY');
+  return moment(dateValue).format('D/M/YYYY');
 };
 
 const extractEmail = (value) => {
@@ -38,6 +39,9 @@ const mapWorkType = (value) => {
   return 'internship';
 };
 
+const buildOpportunityKey = (companyName = '', internshipTitle = '') =>
+  `${companyName}::${internshipTitle}`;
+
 const AiefOpportunity = ({
   _id,
   companyName,
@@ -46,6 +50,7 @@ const AiefOpportunity = ({
   workType,
   compensation,
   transportation,
+  startDate,
   deadline,
   requiredMajor,
   targetGroup,
@@ -59,10 +64,19 @@ const AiefOpportunity = ({
   const [isRemoving, setIsRemoving] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
+  const { savedOpportunityIds, savedOpportunityKeys } = useSelector(
+    (store) => store.aief
+  );
   const contactEmail = extractEmail(howToApply);
   const isAdmin = user?.role === 'admin';
+  const opportunityKey = buildOpportunityKey(companyName, internshipTitle);
+  const isInMyJobs =
+    savedOpportunityIds.includes(_id) ||
+    savedOpportunityKeys.includes(opportunityKey);
 
   const saveToJobs = async () => {
+    if (isInMyJobs) return;
+
     setIsSaving(true);
     try {
       await dispatch(
@@ -71,7 +85,7 @@ const AiefOpportunity = ({
           company: companyName,
           jobLocation: location || 'Cairo',
           jobType: mapWorkType(workType),
-          status: "didn't yet",
+          status: "didn't apply yet",
           compensation,
           transportation,
           deadline,
@@ -82,9 +96,15 @@ const AiefOpportunity = ({
           requiredMajor: requiredMajor || [],
           targetGroup: targetGroup || [],
           sourceType: 'AIEF',
-          sourceOpportunityId: companyName + internshipTitle,
+          sourceOpportunityId: _id,
         })
       ).unwrap();
+      dispatch(
+        markOpportunitySaved({
+          opportunityId: _id,
+          opportunityKey,
+        })
+      );
     } finally {
       setIsSaving(false);
     }
@@ -137,9 +157,18 @@ const AiefOpportunity = ({
             <JobInfo icon={<FaLocationArrow />} text={location || 'Flexible'} />
             <JobInfo icon={<FaBriefcase />} text={workType} />
             <JobInfo icon={<FaMoneyBillWave />} text={compensation} />
-            <JobInfo icon={<FaCalendarAlt />} text={formatDate(deadline)} />
+            <JobInfo
+              icon={<FaCalendarAlt />}
+              text={`Deadline: ${formatDate(deadline)}`}
+            />
           </div>
           <div className='meta'>
+            <p>
+              <span>Start at:</span> {formatDate(startDate)}
+            </p>
+            <p>
+              <span>Deadline:</span> {formatDate(deadline)}
+            </p>
             <p>
               <span>Majors:</span>{' '}
               {requiredMajor?.length
@@ -183,14 +212,19 @@ const AiefOpportunity = ({
           <p className='how-to-apply'>
             <span>How to apply:</span> {howToApply || 'Check the company website'}
           </p>
+          {isInMyJobs && <p className='saved-indicator'>Already in my jobs</p>}
           <footer>
             <button
               type='button'
               className='btn btn-track'
               onClick={saveToJobs}
-              disabled={isSaving}
+              disabled={isSaving || isInMyJobs}
             >
-              {isSaving ? 'saving...' : 'move to my jobs'}
+              {isSaving
+                ? 'saving...'
+                : isInMyJobs
+                  ? 'already in my jobs'
+                  : 'move to my jobs'}
             </button>
             <button
               type='button'

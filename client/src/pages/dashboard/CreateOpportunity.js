@@ -229,7 +229,7 @@ const CreateOpportunity = () => {
             name='compensation'
             value={values.compensation}
             handleChange={handleChange}
-            list={['Not Mentioned', 'Not Specified', 'Paid', 'Unpaid']}
+            list={['Not Mentioned', 'Paid', 'Unpaid']}
           />
           <FormRow
             type='number'

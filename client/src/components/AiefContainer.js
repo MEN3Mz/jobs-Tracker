@@ -1,7 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Wrapper from '../assets/wrappers/JobsContainer';
-import { getAiefFilters, getAllAief } from '../features/aief/aiefSlice';
+import {
+  getAiefFilters,
+  getAllAief,
+  getSavedOpportunityRefs,
+} from '../features/aief/aiefSlice';
 import Loading from './Loading';
 import AiefOpportunity from './AiefOpportunity';
 import AiefPageBtnContainer from './AiefPageBtnContainer';
@@ -32,6 +36,7 @@ const AiefContainer = () => {
     if (isFirstLoad.current) {
       isFirstLoad.current = false;
       dispatch(getAiefFilters());
+      dispatch(getSavedOpportunityRefs());
       dispatch(getAllAief());
       return;
     }

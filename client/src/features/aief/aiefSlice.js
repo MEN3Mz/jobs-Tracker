@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { getAiefFiltersThunk, getAllAiefThunk } from './aiefThunk';
+import {
+  getAiefFiltersThunk,
+  getAllAiefThunk,
+  getSavedOpportunityRefsThunk,
+} from './aiefThunk';
 
 const initialFiltersState = {
   major: 'All',
@@ -12,7 +16,7 @@ const initialFiltersState = {
   deadline: 'All',
   sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
   workTypeOptions: ['All', 'Full-Time', 'Part-Time', 'Remote', 'Internship'],
-  compensationOptions: ['All', 'Paid', 'Unpaid', 'Not Specified', 'Not Mentioned'],
+  compensationOptions: ['All', 'Paid', 'Unpaid', 'Not Mentioned'],
   targetGroupOptions: ['All'],
   majorOptions: ['All'],
 };
@@ -20,6 +24,8 @@ const initialFiltersState = {
 const initialState = {
   isLoading: false,
   isFiltersLoading: false,
+  savedOpportunityIds: [],
+  savedOpportunityKeys: [],
   opportunities: [],
   totalJobs: 0,
   numOfPages: 1,
@@ -31,6 +37,10 @@ export const getAllAief = createAsyncThunk('aief/getAll', getAllAiefThunk);
 export const getAiefFilters = createAsyncThunk(
   'aief/getFilters',
   getAiefFiltersThunk
+);
+export const getSavedOpportunityRefs = createAsyncThunk(
+  'aief/getSavedOpportunityRefs',
+  getSavedOpportunityRefsThunk
 );
 
 const aiefSlice = createSlice({
@@ -56,6 +66,23 @@ const aiefSlice = createSlice({
     },
     changePage: (state, { payload }) => {
       state.currentPage = payload;
+    },
+    markOpportunitySaved: (state, { payload }) => {
+      const { opportunityId, opportunityKey } = payload;
+
+      if (
+        opportunityId &&
+        !state.savedOpportunityIds.includes(opportunityId)
+      ) {
+        state.savedOpportunityIds.push(opportunityId);
+      }
+
+      if (
+        opportunityKey &&
+        !state.savedOpportunityKeys.includes(opportunityKey)
+      ) {
+        state.savedOpportunityKeys.push(opportunityKey);
+      }
     },
     setFilterOptions: (state, { payload }) => {
       if (payload.majorOptions) state.majorOptions = payload.majorOptions;
@@ -90,10 +117,20 @@ const aiefSlice = createSlice({
       state.isFiltersLoading = false;
       toast.error(payload);
     },
+    [getSavedOpportunityRefs.fulfilled]: (state, { payload }) => {
+      state.savedOpportunityIds = payload.savedOpportunityIds || [];
+      state.savedOpportunityKeys = payload.savedOpportunityKeys || [];
+    },
   },
 });
 
-export const { handleChange, clearFilters, changePage, setFilterOptions } =
+export const {
+  handleChange,
+  clearFilters,
+  changePage,
+  markOpportunitySaved,
+  setFilterOptions,
+} =
   aiefSlice.actions;
 
 export default aiefSlice.reducer;

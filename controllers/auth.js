@@ -58,7 +58,8 @@ const register = async (req, res) => {
 
 const verifyEmail = async (req, res) => {
   const { email, verificationToken } = req.body;
-  const user = await User.findOne({ email });
+  const normalizedEmail = email?.trim().toLowerCase();
+  const user = await User.findOne({ email: normalizedEmail });
   if (!user) {
     throw new UnauthenticatedError("Verification Failed");
   }
@@ -81,11 +82,12 @@ const verifyEmail = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+  const normalizedEmail = email?.trim().toLowerCase();
 
-  if (!email || !password) {
+  if (!normalizedEmail || !password) {
     throw new BadRequestError("Please provide email and password");
   }
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email: normalizedEmail });
   if (!user) {
     throw new UnauthenticatedError("Invalid Credentials");
   }

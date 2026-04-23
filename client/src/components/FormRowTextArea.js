@@ -5,6 +5,9 @@ const FormRowTextArea = ({
   labelText,
   rows = 5,
   placeholder,
+  readOnly = false,
+  disabled = false,
+  title = '',
 }) => {
   return (
     <div className='form-row form-row-textarea'>
@@ -18,7 +21,10 @@ const FormRowTextArea = ({
         onChange={handleChange}
         rows={rows}
         placeholder={placeholder}
-        className='form-textarea'
+        className={`form-textarea ${readOnly ? 'form-input-readonly' : ''}`.trim()}
+        readOnly={readOnly}
+        disabled={disabled}
+        title={title}
       />
     </div>
   );

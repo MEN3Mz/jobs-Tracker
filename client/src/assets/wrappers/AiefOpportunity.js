@@ -115,6 +115,12 @@ const Wrapper = styled.article`
     color: var(--grey-900);
   }
 
+  .saved-indicator {
+    margin: 0.75rem 0 0;
+    color: var(--green-dark);
+    font-weight: 600;
+  }
+
   footer {
     display: grid;
     gap: 0.75rem;

@@ -81,7 +81,7 @@ const AIEFschema = new mongoose.Schema(
     },
     compensation: {
       type: String,
-      enum: ["Paid", "Unpaid", "Not Specified", "Not Mentioned"],
+      enum: ["Paid", "Unpaid", "Not Mentioned"],
       default: "Not Mentioned",
     },
     durationInWeeks: {
@@ -105,6 +105,9 @@ const AIEFschema = new mongoose.Schema(
 
 AIEFschema.pre("save", function (next) {
   this.requiredMajor = normalizeAiefMajors(this.requiredMajor);
+  if (this.compensation === "Not Specified") {
+    this.compensation = "Not Mentioned";
+  }
   this.industryGroup = getAiefIndustryGroup(this.industry);
   next();
 });
@@ -115,6 +118,10 @@ AIEFschema.pre("findOneAndUpdate", function (next) {
     update.requiredMajor ??
     update.$set?.requiredMajor ??
     update.$setOnInsert?.requiredMajor;
+  const nextCompensation =
+    update.compensation ??
+    update.$set?.compensation ??
+    update.$setOnInsert?.compensation;
   const nextIndustry =
     update.industry ?? update.$set?.industry ?? update.$setOnInsert?.industry;
 
@@ -135,6 +142,21 @@ AIEFschema.pre("findOneAndUpdate", function (next) {
       update.$set.industryGroup = industryGroup;
     } else {
       update.industryGroup = industryGroup;
+    }
+
+    this.setUpdate(update);
+  }
+
+  if (nextCompensation !== undefined) {
+    const normalizedCompensation =
+      nextCompensation === "Not Specified"
+        ? "Not Mentioned"
+        : nextCompensation;
+
+    if (update.$set) {
+      update.$set.compensation = normalizedCompensation;
+    } else {
+      update.compensation = normalizedCompensation;
     }
 
     this.setUpdate(update);

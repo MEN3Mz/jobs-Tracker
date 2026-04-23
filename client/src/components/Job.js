@@ -43,9 +43,9 @@ const Job = ({
 }) => {
   const dispatch = useDispatch();
 
-  const date = moment(createdAt).format('DD/MM/YYYY');
+  const date = moment(createdAt).format('D/M/YYYY');
   const statusClassName = getStatusClassName(status);
-  const deadlineText = deadline ? moment(deadline).format('DD/MM/YYYY') : null;
+  const deadlineText = deadline ? moment(deadline).format('D/M/YYYY') : null;
   const sourceLabel = sourceType === 'AIEF' ? 'Opportunity' : sourceType;
 
   return (
@@ -95,11 +95,6 @@ const Job = ({
             </p>
           )}
           {description && <p className='description'>{description}</p>}
-          {notes && (
-            <p className='notes'>
-              <span>Notes:</span> {notes}
-            </p>
-          )}
           {applicationInstructions && (
             <p className='instructions'>
               <span>How to apply:</span> {applicationInstructions}
@@ -119,6 +114,11 @@ const Job = ({
               <a href={website} target='_blank' rel='noreferrer'>
                 {website} <FaExternalLinkAlt />
               </a>
+            </p>
+          )}
+          {notes && (
+            <p className='notes'>
+              <span>Notes:</span> {notes}
             </p>
           )}
         </div>

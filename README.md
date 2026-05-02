@@ -75,6 +75,8 @@ API Layer (Axios Requests)
 Express Server (REST API)
    ↓
 MongoDB (Database)
+
+
 🔹 Backend Architecture
 
 The backend follows a modular and scalable design pattern:

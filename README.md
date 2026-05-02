@@ -66,14 +66,24 @@ Express Rate Limit
 Custom error handling
 🏗️ System Design
 🔹 High-Level Architecture
+
+
 Client (React)
+
    ↓
+   
 Redux Store (State Management)
+ 
    ↓
+   
 API Layer (Axios Requests)
+  
    ↓
+   
 Express Server (REST API)
+  
    ↓
+   
 MongoDB (Database)
 
 
